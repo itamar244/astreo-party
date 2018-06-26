@@ -1,0 +1,15 @@
+{
+	"name": "astreo-party-server",
+	"version": "0.0.1",
+	"description": "the server of the Astreo Party Game",
+	"main": "index.js",
+	"repository": "https://github.com/itamar244/astreo-party.git",
+	"author": "Itamar Yatom <itamary24@gmail.com>",
+	"license": "MIT",
+	"private": false,
+	"scripts": {
+	},
+	"dependencies": {
+		"ws": "^5.2.1"
+	}
+}

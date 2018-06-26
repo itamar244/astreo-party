@@ -1,0 +1,23 @@
+{
+	"version": "0.0.1",
+	"description": "a multiplayer replica of the mobile game Astro Party",
+	"repository": "https://github.com/itamar244/astreo-party.git",
+	"author": "Itamar Yatom <itamary24@gmail.com>",
+	"private": true,
+	"workspaces": [
+		"packages/*"
+	],
+	"scripts": {
+		"dev": "webpack-dev-server --config scripts/webpack.config.js",
+		"format": "yarn prettier --write ./scripts/**.js ./packages/**/*.ts"
+	},
+	"devDependencies": {
+		"html-webpack-plugin": "^3.2.0",
+		"prettier": "^1.13.6",
+		"ts-loader": "^4.4.1",
+		"typescript": "^2.9.2",
+		"webpack": "^4.12.1",
+		"webpack-cli": "^3.0.8",
+		"webpack-dev-server": "^3.1.4"
+	}
+}

@@ -1,0 +1,13 @@
+{
+	"name": "astreo-party-app",
+	"version": "0.0.1",
+	"description": "a multiplayer replica of the mobile game Astro Party",
+	"repository": "https://github.com/itamar244/astreo-party.git",
+	"author": "Itamar Yatom <itamary24@gmail.com>",
+	"license": "MIT",
+	"private": false,
+	"dependencies": {
+		"pixi": "^0.3.1"
+	},
+	"devDependencies": {}
+}
