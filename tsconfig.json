@@ -5,5 +5,7 @@
 	],
 	"compilerOptions": {
 		"downlevelIteration": true,
+		"sourceMap": true,
+		"lib": ["es5", "es6", "dom"],
 	},
 }

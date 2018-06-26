@@ -7,9 +7,12 @@
 	"author": "Itamar Yatom <itamary24@gmail.com>",
 	"license": "MIT",
 	"private": false,
-	"scripts": {
-	},
+	"scripts": {},
 	"dependencies": {
 		"ws": "^5.2.1"
+	},
+	"devDependencies": {
+		"@types/node": "^10.3.6",
+		"@types/ws": "^5.1.2"
 	}
 }
