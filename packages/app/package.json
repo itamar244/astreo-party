@@ -7,7 +7,7 @@
 	"license": "MIT",
 	"private": false,
 	"dependencies": {
-		"pixi": "^0.3.1"
+		"pixi.js": "^4.8.1"
 	},
 	"devDependencies": {}
 }

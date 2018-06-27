@@ -4,7 +4,7 @@
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 // TypeScript Version: 2.1
 
-declare module 'pixi' {
+declare module 'pixi.js' {
     // from CONST
     const VERSION: typeof CONST.VERSION;
     const PI_2: typeof CONST.PI_2;
@@ -31,7 +31,7 @@ declare module 'pixi' {
     function autoDetectRenderer(
         options?: RendererOptions
     ): WebGLRenderer | CanvasRenderer;
-    const loader: loaders.Loader;
+    export const loader: loaders.Loader;
 
     //////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////SETTINGS///////////////////////////////////////
@@ -3049,7 +3049,7 @@ declare module 'pixi' {
         detachAll(): MiniSignal;
     }
 
-    namespace loaders {
+    export namespace loaders {
         interface LoaderOptions {
             crossOrigin?: boolean | string;
             loadType?: number;
