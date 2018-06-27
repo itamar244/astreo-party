@@ -1,11 +1,13 @@
 {
 	"target": "ES6",
-	"include": [
-		"types/**.ts",
-	],
 	"compilerOptions": {
 		"downlevelIteration": true,
 		"sourceMap": true,
 		"lib": ["es5", "es6", "dom"],
+
+		"baseUrl": "./packages",
+		"paths": {
+			"shared/*": ["./shared/*"],
+		},
 	},
 }

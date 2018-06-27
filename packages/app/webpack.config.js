@@ -16,6 +16,9 @@ module.exports = {
 	},
 	resolve: {
 		extensions: ['.ts', '.js'],
+		alias: {
+			shared: './packages/shared/',
+		},
 	},
 
 	plugins: [
