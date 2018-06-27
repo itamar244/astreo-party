@@ -2,7 +2,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
 	mode: 'development',
-	entry: './packages/app/index.ts',
+	entry: './packages/app/src/index.ts',
 
 	devtool: 'source-map',
 
@@ -15,12 +15,12 @@ module.exports = {
 		],
 	},
 	resolve: {
-		extensions: ['.tsx', '.ts', '.js'],
+		extensions: ['.ts', '.js'],
 	},
 
 	plugins: [
 		new HtmlWebpackPlugin({
-			title: 'Astreo Party',
+			template: './packages/app/index.html',
 		}),
 	],
 };
