@@ -12,7 +12,7 @@ function coordinateUpdate(
 	return trigoFunc(angleFromRotation(rotation)) * speed;
 }
 
-export function progress(rotation: number, progress: number) {
+export function getProgress(rotation: number, progress: number) {
 	return [
 		coordinateUpdate(Math.cos, rotation, progress),
 		coordinateUpdate(Math.sin, rotation, progress),

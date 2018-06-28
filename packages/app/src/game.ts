@@ -16,9 +16,7 @@ export default class Game {
 	constructor(stage: Container, playersKeys: PlayerKeyOptions[]) {
 		this.stage = stage;
 		// TODO: make cleaner once there is a new design in mind
-		this.controller = new GameController([
-			{ x: 100, y: 100 },
-		]);
+		this.controller = new GameController([{ x: 100, y: 100 }]);
 
 		this.controller.on('bullet-added', (bullet: BulletController) => {
 			const element = new Bullet(bullet);
@@ -26,17 +24,17 @@ export default class Game {
 			this.stage.addChild(element);
 		});
 
-		for (let i = 0; i < playersKeys.length; i++) {
+		this.controller.players.forEach(playerController => {
 			const player = new Player(
-				playersKeys[i],
-				this.controller.players[i],
+				playersKeys[playerController.id],
+				playerController,
 				() => {
-					this.controller.shoot(i);
+					this.controller.shoot(playerController.id);
 				},
 			);
 			this.stage.addChild(player);
 			this.elements.push(player);
-		}
+		})
 	}
 
 	tick(delta: number): void {
