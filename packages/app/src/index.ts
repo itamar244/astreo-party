@@ -15,7 +15,7 @@ app.stage.position.y = app.renderer.height / app.renderer.resolution;
 app.stage.scale.y = -1;
 
 // prettier-ignore
-const game = new Game(app.stage, [
+const game = new Game(app, [
 	{ left: 'ArrowLeft', right: 'ArrowRight', shoot: 'Space' },
 ]);
 

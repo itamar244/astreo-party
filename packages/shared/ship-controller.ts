@@ -1,6 +1,7 @@
 import MovableController from './movable-controller';
 import BulletController from './bullet-controller';
 
+export type ShipOptions = { x: number; y: number, rotation: number };
 export type TurnType = 0 | 1 | 2;
 
 export const TURN_NONE = 0;
@@ -9,7 +10,6 @@ export const TURN_RIGHT = 2;
 
 export const SHIP_HEIGHT = 45;
 export const SHIP_WIDTH = 30;
-
 const MAX_AVAILABLE_BULLETS = 3;
 const FRAMSE_UNTIL_RECHARGE = 60;
 
@@ -20,8 +20,8 @@ export default class ShipController extends MovableController {
 	// private __rotationBeforeTurn: number = 0;
 	// private __turnSince: number = 0;
 
-	constructor(public readonly id: number, x: number, y: number) {
-		super(x, y, 0, 2);
+	constructor(public readonly id: number, options: ShipOptions) {
+		super(options.x, options.y, options.rotation, 2);
 	}
 
 	tick(delta: number) {
