@@ -9,6 +9,8 @@ import { BLUE } from './colors';
 import keyListener from './key-listener';
 import { createShip, updateShipFromController } from './ship';
 
+export type PlayerKeyOptions = { left: string; right: string; shoot: string };
+
 function keyPressController(
 	key: string,
 	dir: TurnType,
@@ -27,28 +29,37 @@ function keyPressController(
 	);
 }
 
-export default class Game extends Container {
+export default class Player extends Container {
 	private readonly controller: PlayerController;
 	private readonly ship: Graphics;
 
-	constructor(keys: [string, string], controller: PlayerController) {
+	constructor(
+		keys: PlayerKeyOptions,
+		controller: PlayerController,
+		shoot: () => void,
+	) {
 		super();
 		this.controller = controller;
 		this.ship = createShip(BLUE, controller.x, controller.y);
 
 		this.addChild(this.ship);
 
-		const stopLeft = keyPressController(keys[0], TURN_LEFT, this.controller);
-		const stopRight = keyPressController(keys[1], TURN_RIGHT, this.controller);
+		const stopLeft = keyPressController(keys.left, TURN_LEFT, this.controller);
+		const stopRight = keyPressController(
+			keys.right,
+			TURN_RIGHT,
+			this.controller,
+		);
+		const stopShoot = keyListener(keys.shoot, shoot, () => {});
 
 		this.on('removed', () => {
 			stopLeft();
 			stopRight();
+			stopShoot();
 		});
 	}
 
 	tick(delta: number): void {
-		this.controller.tick(delta);
 		updateShipFromController(this.ship, this.controller);
 	}
 }

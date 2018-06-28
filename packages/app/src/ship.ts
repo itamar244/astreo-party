@@ -1,14 +1,15 @@
 import { Graphics, Point } from 'pixi.js';
-import PlayerController from 'shared/player-controller';
+import PlayerController, {
+	PLAYER_HEIGHT,
+	PLAYER_WIDTH,
+} from 'shared/player-controller';
 import { Color, WHITE } from './colors';
 
-const SHIP_HEIGHT = 45;
-const SHIP_WIDTH = 32;
 const POLYGON_DEFAULT = [
-	new Point(0, +SHIP_HEIGHT / 2),
-	new Point(-SHIP_WIDTH / 2, -SHIP_HEIGHT / 2),
-	new Point(+SHIP_WIDTH / 2, -SHIP_HEIGHT / 2),
-	new Point(0, +SHIP_HEIGHT / 2),
+	new Point(0, +PLAYER_HEIGHT / 2),
+	new Point(-PLAYER_WIDTH / 2, -PLAYER_HEIGHT / 2),
+	new Point(+PLAYER_WIDTH / 2, -PLAYER_HEIGHT / 2),
+	new Point(0, +PLAYER_HEIGHT / 2),
 ];
 
 export function createShip(color: Color, initialX: number, initialY: number) {

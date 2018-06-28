@@ -1,0 +1,16 @@
+{
+	"name": "astreo-party-shared",
+	"version": "0.0.1",
+	"description": "shared code of the Astreo Party Game between other packages",
+	"repository": "https://github.com/itamar244/astreo-party.git",
+	"author": "Itamar Yatom <itamary24@gmail.com>",
+	"license": "MIT",
+	"private": false,
+	"scripts": {},
+	"dependencies": {
+		"eventemitter3": "^3.1.0"
+	},
+	"devDependencies": {
+		"@types/eventemitter3": "^2.0.2"
+	}
+}

@@ -5,14 +5,14 @@ export default function keyListener(
 ) {
 	let pressed = false;
 	const keydown = (event: KeyboardEvent) => {
-		if (!pressed && event.key === key) {
+		if (!pressed && event.code === key) {
 			pressed = true;
 			onKeyDown(event);
 		}
 	};
 
 	const keyup = (event: KeyboardEvent) => {
-		if (pressed && event.key === key) {
+		if (pressed && event.code === key) {
 			pressed = false;
 			onKeyUp(event);
 		}
