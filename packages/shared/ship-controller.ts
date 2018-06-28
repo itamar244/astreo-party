@@ -7,13 +7,13 @@ export const TURN_NONE = 0;
 export const TURN_LEFT = 1;
 export const TURN_RIGHT = 2;
 
-export const PLAYER_HEIGHT = 45;
-export const PLAYER_WIDTH = 30;
+export const SHIP_HEIGHT = 45;
+export const SHIP_WIDTH = 30;
 
 const MAX_AVAILABLE_BULLETS = 3;
 const FRAMSE_UNTIL_RECHARGE = 60;
 
-export default class PlayerController extends MovableController {
+export default class ShipController extends MovableController {
 	turn: TurnType = TURN_NONE;
 	private __availableBullets: number = MAX_AVAILABLE_BULLETS;
 	private __sinceLastShot: number = 0;

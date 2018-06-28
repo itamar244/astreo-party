@@ -1,37 +1,37 @@
 import { EventEmitter } from 'events';
 import Ticker from './ticker';
 import BulletController from './bullet-controller';
-import PlayerController from './player-controller';
+import ShipController from './ship-controller';
 
 export default class GameController extends EventEmitter implements Ticker {
-	readonly playersByName: { [key: number]: PlayerController } = {};
+	readonly shipsByName: { [key: number]: ShipController } = {};
 	readonly bullets = new Set<BulletController>();
-	public readonly players = new Set<PlayerController>();
+	public readonly ships = new Set<ShipController>();
 
-	constructor(playersOptions: Array<{ x: number; y: number }>) {
+	constructor(shipsOptions: Array<{ x: number; y: number }>) {
 		super();
-		for (let i = 0; i < playersOptions.length; i++) {
-			const player = new PlayerController(
+		for (let i = 0; i < shipsOptions.length; i++) {
+			const ship = new ShipController(
 				i,
-				playersOptions[i].x,
-				playersOptions[i].y,
+				shipsOptions[i].x,
+				shipsOptions[i].y,
 			);
-			this.playersByName[player.id] = player;
-			this.players.add(player);
+			this.shipsByName[ship.id] = ship;
+			this.ships.add(ship);
 		}
 	}
 
 	tick(delta: number) {
-		this.players.forEach(player => {
-			player.tick(delta);
+		this.ships.forEach(ship => {
+			ship.tick(delta);
 		});
 		this.bullets.forEach(bullet => {
 			bullet.tick(delta);
 		});
 	}
 
-	shoot(playerId: number) {
-		const bullet = this.playersByName[playerId].shoot();
+	shoot(shipId: number) {
+		const bullet = this.shipsByName[shipId].shoot();
 		if (bullet !== null) {
 			this.emit('bullet-added', bullet);
 			this.bullets.add(bullet);

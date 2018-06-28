@@ -20,7 +20,7 @@ function updateBulletFromController(
 	projectile.position.set(controller.x, controller.y);
 }
 
-export default class Player extends Container {
+export default class Bullet extends Container {
 	private readonly projectile: Graphics;
 
 	constructor(public readonly controller: BulletController) {

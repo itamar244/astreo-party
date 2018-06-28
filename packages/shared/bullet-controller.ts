@@ -1,11 +1,11 @@
 import MovableController, { getProgress } from './movable-controller';
-import PlayerController, { PLAYER_HEIGHT } from './player-controller';
+import ShipController, { SHIP_HEIGHT } from './ship-controller';
 
 export default class BulletController extends MovableController {
-	readonly owner: PlayerController;
+	readonly owner: ShipController;
 
-	constructor(owner: PlayerController) {
-		const [x, y] = getProgress(owner.rotation, PLAYER_HEIGHT / 2);
+	constructor(owner: ShipController) {
+		const [x, y] = getProgress(owner.rotation, SHIP_HEIGHT / 2);
 		super(owner.x + x, owner.y + y, owner.rotation, 5);
 		this.owner = owner;
 	}
