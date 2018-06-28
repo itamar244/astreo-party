@@ -873,7 +873,7 @@ declare module 'pixi.js' {
         cb: () => any;
         scope: any;
     }
-    class Point extends PointLike {
+    export class Point extends PointLike {
         constructor(x?: number, y?: number);
         clone(): Point;
         equals(p: PointLike): boolean;

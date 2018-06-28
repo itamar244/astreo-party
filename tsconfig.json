@@ -3,11 +3,11 @@
 	"compilerOptions": {
 		"downlevelIteration": true,
 		"sourceMap": true,
-		"lib": ["es5", "es6", "dom"],
+		"lib": ["ES6", "DOM"],
 
 		"baseUrl": "./packages",
 		"paths": {
-			"shared/*": ["./shared/*"],
+			"shared": ["./shared"],
 		},
 	},
 }
