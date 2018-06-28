@@ -5,7 +5,8 @@ import {
 	BulletController,
 	ShipController,
 } from 'shared';
-import Ship, { ShipKeyOptions } from './ship';
+import initPlayer, { PlayerKeyOptions } from './player';
+import Ship from './ship';
 import Bullet from './bullet';
 
 export default class Game {
@@ -13,7 +14,7 @@ export default class Game {
 	private readonly stage: Container;
 	private readonly elements: Ticker[] = [];
 
-	constructor(stage: Container, shipsKeys: ShipKeyOptions[]) {
+	constructor(stage: Container, playersKeys: PlayerKeyOptions[]) {
 		this.stage = stage;
 		// TODO: make cleaner once there is a new design in mind
 		this.controller = new GameController([{ x: 100, y: 100 }]);
@@ -25,16 +26,14 @@ export default class Game {
 		});
 
 		this.controller.ships.forEach(shipController => {
-			const ship = new Ship(
-				shipsKeys[shipController.id],
-				shipController,
-				() => {
-					this.controller.shoot(shipController.id);
-				},
-			);
+			const ship = new Ship(shipController);
 			this.stage.addChild(ship);
 			this.elements.push(ship);
-		})
+		});
+
+		playersKeys.forEach((playerKeys, i) => {
+			initPlayer(i, playerKeys, this.controller);
+		});
 	}
 
 	tick(delta: number): void {

@@ -61,6 +61,7 @@ export default class ShipController extends MovableController {
 		this.turn = dir;
 	}
 
+	// should be used internaly
 	shoot() {
 		if (this.__availableBullets > 0) {
 			this.__availableBullets -= 1;
