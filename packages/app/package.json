@@ -9,5 +9,8 @@
 	"dependencies": {
 		"pixi.js": "^4.8.1"
 	},
-	"devDependencies": {}
+	"devDependencies": {
+		"css-loader": "^0.28.11",
+		"style-loader": "^0.21.0"
+	}
 }
