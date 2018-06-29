@@ -4,10 +4,10 @@ import {
 	GameController,
 	BulletController,
 	ShipController,
-} from 'shared';
+} from 'shared/index';
 import initPlayer, { PlayerKeyOptions } from './player';
-import Ship from './ship';
-import Bullet from './bullet';
+import ShipElement from './elements/ship';
+import BulletElement from './elements/bullet';
 
 export default class Game {
 	private readonly controller: GameController;
@@ -21,13 +21,13 @@ export default class Game {
 		);
 
 		this.controller.on('bullet-added', (bulletController: BulletController) => {
-			const bullet = new Bullet(bulletController);
+			const bullet = new BulletElement(bulletController);
 			app.stage.addChild(bullet);
 			this.elements.push(bullet);
 		});
 
-		this.controller.ships.forEach(shipController => {
-			const ship = new Ship(shipController);
+		this.controller.shipsForEach(shipController => {
+			const ship = new ShipElement(shipController);
 			app.stage.addChild(ship);
 			this.elements.push(ship);
 		});

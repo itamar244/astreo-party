@@ -1,12 +1,12 @@
 import { Container, Graphics } from 'pixi.js';
-import BulletController from 'shared/bullet-controller';
-import { YELLOW } from './colors';
+import BulletController, { BULLET_RADIUS } from 'shared/bullet-controller';
+import { YELLOW } from '../colors';
 
 function createPoint(controller: BulletController) {
 	const point = new Graphics();
 
 	point.beginFill(YELLOW);
-	point.drawCircle(0, 0, 10);
+	point.drawCircle(0, 0, BULLET_RADIUS);
 
 	updateBulletFromController(point, controller);
 
@@ -20,7 +20,7 @@ function updateBulletFromController(
 	projectile.position.set(controller.x, controller.y);
 }
 
-export default class Bullet extends Container {
+export default class BulletElement extends Container {
 	private readonly projectile: Graphics;
 
 	constructor(public readonly controller: BulletController) {

@@ -7,7 +7,7 @@ import ShipController, {
 	SHIP_HEIGHT,
 	SHIP_WIDTH,
 } from 'shared/ship-controller';
-import { BLUE, Color, WHITE } from './colors';
+import { BLUE, Color, WHITE } from '../colors';
 
 const POLYGON_DEFAULT = [
 	new Point(0, +SHIP_HEIGHT / 2),
@@ -38,7 +38,7 @@ export function updateShipFromController(
 	ship.rotation = state.rotation * Math.PI * 2;
 }
 
-export default class Ship extends Container {
+export default class ShipElement extends Container {
 	private readonly controller: ShipController;
 	private readonly ship: Graphics;
 

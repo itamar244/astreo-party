@@ -5,9 +5,9 @@ import ShipController, { ShipOptions } from './ship-controller';
 import { randomNumber } from './utils';
 
 export default class GameController extends EventEmitter implements Ticker {
-	private readonly shipsByID: { [key: number]: ShipController } = {};
-	private readonly bullets = new Set<BulletController>();
-	public readonly ships = new Set<ShipController>();
+	private readonly __shipsByID: { [key: number]: ShipController } = {};
+	private readonly __bullets = new Set<BulletController>();
+	private readonly __ships = new Set<ShipController>();
 
 	static createRandomGame(
 		ships: number,
@@ -29,29 +29,33 @@ export default class GameController extends EventEmitter implements Ticker {
 		super();
 		for (let i = 0; i < shipsOptions.length; i++) {
 			const ship = new ShipController(i, shipsOptions[i]);
-			this.shipsByID[ship.id] = ship;
-			this.ships.add(ship);
+			this.__shipsByID[ship.id] = ship;
+			this.__ships.add(ship);
 		}
 	}
 
 	tick(delta: number) {
-		this.ships.forEach(ship => {
+		this.__ships.forEach(ship => {
 			ship.tick(delta);
 		});
-		this.bullets.forEach(bullet => {
+		this.__bullets.forEach(bullet => {
 			bullet.tick(delta);
 		});
 	}
 
 	getShipById(shipID: number) {
-		return this.shipsByID[shipID] || null;
+		return this.__shipsByID[shipID] || null;
+	}
+
+	shipsForEach(func: (ShipController) => void) {
+		this.__ships.forEach(func);
 	}
 
 	shoot(shipID: number) {
-		const bullet = this.shipsByID[shipID].shoot();
+		const bullet = this.__shipsByID[shipID].shoot();
 		if (bullet !== null) {
 			this.emit('bullet-added', bullet);
-			this.bullets.add(bullet);
+			this.__bullets.add(bullet);
 		}
 	}
 }
