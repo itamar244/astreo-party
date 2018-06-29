@@ -1,6 +1,8 @@
 import MovableController, { getProgress } from './movable-controller';
 import ShipController, { SHIP_HEIGHT } from './ship-controller';
 
+export const BULLET_RADIUS = 6;
+
 export default class BulletController extends MovableController {
 	readonly owner: ShipController;
 
