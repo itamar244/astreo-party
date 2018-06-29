@@ -7,6 +7,7 @@ import ShipController, {
 	SHIP_HEIGHT,
 	SHIP_WIDTH,
 } from 'shared/ship-controller';
+import Element from './base';
 import { BLUE, Color, WHITE } from '../colors';
 
 const POLYGON_DEFAULT = [
@@ -29,28 +30,14 @@ export function createShip(color: Color, initialX: number, initialY: number) {
 	return ship;
 }
 
-export function updateShipFromController(
-	ship: Graphics,
-	state: ShipController,
-) {
-	ship.position.x = state.x;
-	ship.position.y = state.y;
-	ship.rotation = state.rotation * Math.PI * 2;
-}
-
-export default class ShipElement extends Container {
-	private readonly controller: ShipController;
-	private readonly ship: Graphics;
-
+export default class ShipElement extends Element<Graphics, ShipController> {
 	constructor(controller: ShipController) {
-		super();
-		this.controller = controller;
-		this.ship = createShip(BLUE, controller.x, controller.y);
-
-		this.addChild(this.ship);
+		super(createShip(BLUE, controller.x, controller.y), controller);
 	}
 
-	tick(delta: number): void {
-		updateShipFromController(this.ship, this.controller);
+	flush(): void {
+		this._display.position.x = this._controller.x;
+		this._display.position.y = this._controller.y;
+		this._display.rotation = this._controller.rotation * Math.PI * 2;
 	}
 }
