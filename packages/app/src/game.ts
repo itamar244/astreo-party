@@ -1,4 +1,4 @@
-import { Application } from 'pixi.js';
+import { Application } from '@pixi/app';
 import { GameController, BulletController, ShipController } from 'shared/index';
 import initPlayer, { PlayerKeyOptions } from './player';
 import Element from './elements/base';

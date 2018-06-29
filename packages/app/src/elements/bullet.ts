@@ -1,4 +1,4 @@
-import { Container, Graphics } from 'pixi.js';
+import { Graphics } from '@pixi/graphics';
 import BulletController, { BULLET_RADIUS } from 'shared/bullet-controller';
 import Element from './base';
 import { YELLOW } from '../colors';

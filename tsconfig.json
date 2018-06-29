@@ -10,4 +10,7 @@
 			"shared": ["./shared"],
 		},
 	},
+	"exclude": [
+		"/node_modules/",
+	],
 }

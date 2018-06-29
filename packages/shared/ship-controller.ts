@@ -1,7 +1,7 @@
 import MovableController from './movable-controller';
 import BulletController from './bullet-controller';
 
-export type ShipOptions = { x: number; y: number, rotation: number };
+export type ShipOptions = { x: number; y: number; rotation: number };
 export type TurnType = 0 | 1 | 2;
 
 export const TURN_NONE = 0;

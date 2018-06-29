@@ -1,4 +1,4 @@
-import { Container, Graphics, Point } from 'pixi.js';
+import { Graphics } from '@pixi/graphics';
 import ShipController, {
 	TurnType,
 	TURN_NONE,
@@ -10,11 +10,12 @@ import ShipController, {
 import Element from './base';
 import { BLUE, Color, WHITE } from '../colors';
 
+// prettier-ignore
 const POLYGON_DEFAULT = [
-	new Point(0, +SHIP_HEIGHT / 2),
-	new Point(-SHIP_WIDTH / 2, -SHIP_HEIGHT / 2),
-	new Point(+SHIP_WIDTH / 2, -SHIP_HEIGHT / 2),
-	new Point(0, +SHIP_HEIGHT / 2),
+	0, +SHIP_HEIGHT / 2,
+	-SHIP_WIDTH / 2, -SHIP_HEIGHT / 2,
+	+SHIP_WIDTH / 2, -SHIP_HEIGHT / 2,
+	0, +SHIP_HEIGHT / 2,
 ];
 
 export function createShip(color: Color, initialX: number, initialY: number) {

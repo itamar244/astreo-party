@@ -1,10 +1,14 @@
-import { Application } from 'pixi.js';
+import { Renderer } from '@pixi/core';
+import { Application } from '@pixi/app';
+import { GraphicsRenderer } from '@pixi/graphics';
 import Game from './game';
 
 import './styles/main.css';
 
 // @ts-ignore
 if (module.hot) module.hot.accept();
+
+Renderer.registerPlugin('graphics', GraphicsRenderer);
 
 const app = new Application({
 	view: document.querySelector('.game-wrapper'),
