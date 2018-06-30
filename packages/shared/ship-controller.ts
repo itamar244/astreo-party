@@ -4,11 +4,12 @@ import BulletController from './bullet-controller';
 import Point from './point';
 
 export type ShipOptions = { x: number; y: number; rotation: number };
-export type TurnType = 0 | 1 | 2;
 
-export const TURN_NONE = 0;
-export const TURN_LEFT = 1;
-export const TURN_RIGHT = 2;
+export enum Direction {
+	STRAIGHT,
+	LEFT,
+	RIGHT,
+}
 
 export const SHIP_HEIGHT = 45;
 export const SHIP_WIDTH = 30;
@@ -16,7 +17,7 @@ const MAX_AVAILABLE_BULLETS = 3;
 const FRAMES_UNTIL_RECHARGE = 60;
 
 export default class ShipController extends MovableController {
-	public turn: TurnType = TURN_NONE;
+	public turn: Direction = Direction.STRAIGHT;
 	private __availableBullets: number = MAX_AVAILABLE_BULLETS;
 	private __sinceLastShot: number = 0;
 	// private __rotationBeforeTurn: number = 0;
@@ -42,19 +43,19 @@ export default class ShipController extends MovableController {
 			}
 		}
 
-		if (this.turn !== TURN_NONE) {
-			if (this.turn === TURN_LEFT) {
+		if (this.turn !== Direction.STRAIGHT) {
+			if (this.turn === Direction.LEFT) {
 				this.rotation += 0.01;
 				if (this.rotation >= 1) this.rotation -= 1;
-			} else if (this.turn === TURN_RIGHT) {
+			} else if (this.turn === Direction.RIGHT) {
 				this.rotation -= 0.01;
 				if (this.rotation <= 0) this.rotation += 1;
 			}
 		}
 	}
 
-	updateTurn(dir: TurnType) {
-		// if (dir === TURN_NONE) {
+	updateTurn(dir: Direction) {
+		// if (dir === Direction.STRAIGHT) {
 		// 	this.__turnSince = 0;
 		// } else {
 		// 	this.__rotationBeforeTurn = this.rotation;

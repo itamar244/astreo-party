@@ -1,10 +1,6 @@
 import { Graphics } from '@pixi/graphics';
 import { PI_2 } from '@pixi/math';
 import ShipController, {
-	TurnType,
-	TURN_NONE,
-	TURN_LEFT,
-	TURN_RIGHT,
 	SHIP_HEIGHT,
 	SHIP_WIDTH,
 } from 'shared/ship-controller';

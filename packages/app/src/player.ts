@@ -1,29 +1,22 @@
-import {
-	GameController,
-	ShipController,
-	TurnType,
-	TURN_NONE,
-	TURN_LEFT,
-	TURN_RIGHT,
-} from 'shared';
+import { GameController, ShipController, Direction } from 'shared/index';
 import keyListener from './key-listener';
 
 export type PlayerKeyOptions = { left: string; right: string; shoot: string };
 
 function keyPressController(
 	key: string,
-	dir: TurnType,
+	dir: Direction,
 	shipController: ShipController,
 ) {
 	return keyListener(
 		key,
 		() => {
-			if (shipController.turn === TURN_NONE) {
+			if (shipController.turn === Direction.STRAIGHT) {
 				shipController.updateTurn(dir);
 			}
 		},
 		() => {
-			shipController.updateTurn(TURN_NONE);
+			shipController.updateTurn(Direction.STRAIGHT);
 		},
 	);
 }
@@ -34,8 +27,16 @@ export default function initPlayer(
 	gameController: GameController,
 ) {
 	const shipController = gameController.getShipById(shipID);
-	const stopLeft = keyPressController(keys.left, TURN_LEFT, shipController);
-	const stopRight = keyPressController(keys.right, TURN_RIGHT, shipController);
+	const stopLeft = keyPressController(
+		keys.left,
+		Direction.LEFT,
+		shipController,
+	);
+	const stopRight = keyPressController(
+		keys.right,
+		Direction.RIGHT,
+		shipController,
+	);
 	const stopShoot = keyListener(
 		keys.shoot,
 		() => {
