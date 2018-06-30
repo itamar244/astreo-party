@@ -24,12 +24,12 @@ export default class MovableController implements Ticker {
 		public x: number,
 		public y: number,
 		public rotation: number,
-		protected speed: number,
+		protected _speed: number,
 	) {}
 
 	protected _move(rotation: number, delta: number) {
-		this.x += coordinateUpdate(Math.cos, rotation, this.speed * delta);
-		this.y += coordinateUpdate(Math.sin, rotation, this.speed * delta);
+		this.x += coordinateUpdate(Math.cos, rotation, this._speed * delta);
+		this.y += coordinateUpdate(Math.sin, rotation, this._speed * delta);
 	}
 
 	tick(delta: number) {
