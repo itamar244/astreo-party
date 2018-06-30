@@ -1,7 +1,8 @@
+import { PI_2 } from '@pixi/math';
 import Ticker from './ticker';
 
 function angleFromRotation(rotation: number) {
-	return (rotation + 0.25) * Math.PI * 2;
+	return (rotation + 0.25) * PI_2;
 }
 
 function coordinateUpdate(

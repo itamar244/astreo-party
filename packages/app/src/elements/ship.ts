@@ -1,4 +1,5 @@
 import { Graphics } from '@pixi/graphics';
+import { PI_2 } from '@pixi/math';
 import ShipController, {
 	TurnType,
 	TURN_NONE,
@@ -39,6 +40,6 @@ export default class ShipElement extends Element<Graphics, ShipController> {
 	flush(): void {
 		this._display.position.x = this._controller.x;
 		this._display.position.y = this._controller.y;
-		this._display.rotation = this._controller.rotation * Math.PI * 2;
+		this._display.rotation = this._controller.rotation * PI_2;
 	}
 }
