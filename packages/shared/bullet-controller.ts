@@ -1,7 +1,7 @@
 import MovableController, { getProgress } from './movable-controller';
 import ShipController, { SHIP_HEIGHT } from './ship-controller';
 
-export const BULLET_RADIUS = 6;
+export const BULLET_RADIUS = 5;
 
 export default class BulletController extends MovableController {
 	readonly owner: ShipController;
@@ -10,5 +10,9 @@ export default class BulletController extends MovableController {
 		const [x, y] = getProgress(owner.rotation, SHIP_HEIGHT / 2);
 		super(owner.x + x, owner.y + y, owner.rotation, 5);
 		this.owner = owner;
+	}
+
+	get radius() {
+		return BULLET_RADIUS;
 	}
 }

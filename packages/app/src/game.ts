@@ -16,12 +16,6 @@ export default class Game {
 			app.renderer.height,
 		);
 
-		this.controller.on('bullet-added', (bulletController: BulletController) => {
-			const bullet = new BulletElement(bulletController);
-			app.stage.addChild(bullet.display());
-			this.elements.push(bullet);
-		});
-
 		this.controller.shipsForEach(shipController => {
 			const ship = new ShipElement(shipController);
 			app.stage.addChild(ship.display());
@@ -30,6 +24,12 @@ export default class Game {
 
 		playersKeys.forEach((playerKeys, i) => {
 			initPlayer(i, playerKeys, this.controller);
+		});
+
+		this.controller.on('bullet-added', (bulletController: BulletController) => {
+			const bullet = new BulletElement(bulletController);
+			app.stage.addChild(bullet.display());
+			this.elements.push(bullet);
 		});
 	}
 

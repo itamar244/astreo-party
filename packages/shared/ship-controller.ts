@@ -14,7 +14,7 @@ const MAX_AVAILABLE_BULLETS = 3;
 const FRAMSE_UNTIL_RECHARGE = 60;
 
 export default class ShipController extends MovableController {
-	turn: TurnType = TURN_NONE;
+	public turn: TurnType = TURN_NONE;
 	private __availableBullets: number = MAX_AVAILABLE_BULLETS;
 	private __sinceLastShot: number = 0;
 	// private __rotationBeforeTurn: number = 0;

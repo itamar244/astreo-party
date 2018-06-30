@@ -1,5 +1,5 @@
 import { Graphics } from '@pixi/graphics';
-import BulletController, { BULLET_RADIUS } from 'shared/bullet-controller';
+import BulletController from 'shared/bullet-controller';
 import Element from './base';
 import { YELLOW } from '../colors';
 
@@ -7,7 +7,7 @@ function createPoint(controller: BulletController) {
 	const dot = new Graphics();
 
 	dot.beginFill(YELLOW);
-	dot.drawCircle(0, 0, BULLET_RADIUS);
+	dot.drawCircle(0, 0, controller.radius);
 
 	dot.position.set(controller.x, controller.y);
 
