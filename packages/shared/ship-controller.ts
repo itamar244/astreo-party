@@ -1,5 +1,7 @@
+import { PI_2 } from '@pixi/math';
 import MovableController from './movable-controller';
 import BulletController from './bullet-controller';
+import Point from './point';
 
 export type ShipOptions = { x: number; y: number; rotation: number };
 export type TurnType = 0 | 1 | 2;
@@ -11,7 +13,7 @@ export const TURN_RIGHT = 2;
 export const SHIP_HEIGHT = 45;
 export const SHIP_WIDTH = 30;
 const MAX_AVAILABLE_BULLETS = 3;
-const FRAMSE_UNTIL_RECHARGE = 60;
+const FRAMES_UNTIL_RECHARGE = 60;
 
 export default class ShipController extends MovableController {
 	public turn: TurnType = TURN_NONE;
@@ -34,7 +36,7 @@ export default class ShipController extends MovableController {
 
 		if (this.__availableBullets < MAX_AVAILABLE_BULLETS) {
 			this.__sinceLastShot += delta;
-			if (this.__sinceLastShot > FRAMSE_UNTIL_RECHARGE) {
+			if (this.__sinceLastShot > FRAMES_UNTIL_RECHARGE) {
 				this.__availableBullets += 1;
 				this.__sinceLastShot = 0;
 			}
@@ -68,5 +70,20 @@ export default class ShipController extends MovableController {
 			return new BulletController(this);
 		}
 		return null;
+	}
+
+	toPolygon(): Point[] {
+		const angle = this.rotation * PI_2;
+		return [
+			new Point(this.x, this.y + SHIP_HEIGHT / 2).rotate(angle, this),
+			new Point(this.x - SHIP_WIDTH / 2, this.y - SHIP_HEIGHT / 2).rotate(
+				angle,
+				this,
+			),
+			new Point(this.x + SHIP_WIDTH / 2, this.y - SHIP_HEIGHT / 2).rotate(
+				angle,
+				this,
+			),
+		];
 	}
 }

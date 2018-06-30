@@ -4373,3 +4373,7 @@ declare module '@pixi/graphics' {
 declare module '@pixi/display' {
 	export { DisplayObject } from 'pixi.js';
 }
+
+declare module '@pixi/math' {
+	export { PI_2, Point, Circle, Polygon } from 'pixi.js';
+}
