@@ -11,7 +11,7 @@
 		"dev:app": "webpack-dev-server --config packages/app/webpack.config.js",
 		"dev:server": "ts-node-dev packages/server/index.ts",
 		"dev": "npm-run-all -p dev:app dev:server",
-		"format": "prettier \"{,./packages/**/}*.{js,ts}\" --write"
+		"format": "prettier \"{./types/,./packages/**/}*.{js,ts,.d.ts}\" --write"
 	},
 	"devDependencies": {
 		"html-webpack-plugin": "^3.2.0",
