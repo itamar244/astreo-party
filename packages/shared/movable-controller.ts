@@ -6,7 +6,7 @@ function angleFromRotation(rotation: number) {
 }
 
 function coordinateUpdate(
-	trigoFunc: (number) => number,
+	trigoFunc: (angle: number) => number,
 	rotation: number,
 	speed: number,
 ) {
@@ -28,12 +28,12 @@ export default class MovableController implements Ticker {
 		protected _speed: number,
 	) {}
 
+	tick(delta: number) {
+		this._move(this.rotation, delta);
+	}
+
 	protected _move(rotation: number, delta: number) {
 		this.x += coordinateUpdate(Math.cos, rotation, this._speed * delta);
 		this.y += coordinateUpdate(Math.sin, rotation, this._speed * delta);
-	}
-
-	tick(delta: number) {
-		this._move(this.rotation, delta);
 	}
 }

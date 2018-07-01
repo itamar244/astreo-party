@@ -6,40 +6,40 @@ import ShipElement from './elements/ship';
 import BulletElement from './elements/bullet';
 
 export default class Game {
-	private readonly __controller: GameController;
-	private readonly __elements: Element<any, any>[] = [];
+	private readonly _controller: GameController;
+	private readonly _elements: Element<any, any>[] = [];
 
 	constructor(app: Application, playersKeys: PlayerKeyOptions[]) {
-		this.__controller = GameController.createRandomGame(
+		this._controller = GameController.createRandomGame(
 			playersKeys.length,
 			app.renderer.width,
 			app.renderer.height,
 		);
 
-		this.__controller.shipsForEach(shipController => {
+		this._controller.shipsForEach(shipController => {
 			const ship = new ShipElement(shipController);
 			app.stage.addChild(ship.display());
-			this.__elements.push(ship);
+			this._elements.push(ship);
 		});
 
 		playersKeys.forEach((playerKeys, i) => {
-			initPlayer(i, playerKeys, this.__controller);
+			initPlayer(i, playerKeys, this._controller);
 		});
 
-		this.__controller.on(
+		this._controller.on(
 			'bullet-added',
 			(bulletController: BulletController) => {
 				const bullet = new BulletElement(bulletController);
 				app.stage.addChild(bullet.display());
-				this.__elements.push(bullet);
+				this._elements.push(bullet);
 			},
 		);
 	}
 
 	tick(delta: number): void {
-		this.__controller.tick(delta);
-		for (let i = 0; i < this.__elements.length; i++) {
-			this.__elements[i].flush();
+		this._controller.tick(delta);
+		for (let i = 0; i < this._elements.length; i++) {
+			this._elements[i].flush();
 		}
 	}
 }

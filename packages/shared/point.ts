@@ -30,7 +30,7 @@ export default class Point implements PointLike {
 
 		const sin = Math.sin(angle);
 		const cos = Math.cos(angle);
-		let point = this.subtract(center);
+		const point = this.subtract(center);
 
 		return new Point(
 			point.x * cos - point.y * sin,

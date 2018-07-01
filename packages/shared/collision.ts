@@ -1,5 +1,5 @@
-import Point from './point';
 import BulletController from './bullet-controller';
+import Point from './point';
 import ShipController, { SHIP_HEIGHT } from './ship-controller';
 
 function polygonContains(polygon: Point[], x: number, y: number) {
@@ -16,7 +16,9 @@ function polygonContains(polygon: Point[], x: number, y: number) {
 			pi.y > y !== pj.y > y &&
 			x < (pj.x - pi.x) * ((y - pi.y) / (pj.y - pi.y)) + pi.x;
 
-		if (intersect) inside = !inside;
+		if (intersect) {
+			inside = !inside;
+		}
 	}
 
 	return inside;

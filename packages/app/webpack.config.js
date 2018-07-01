@@ -5,7 +5,7 @@ const MinifyPlugin = require('babel-minify-webpack-plugin');
 module.exports = (mode = 'development') => {
 	const config = {
 		mode,
-		entry: path.resolve(__dirname, 'src/index.ts'),
+		entry: path.resolve(_dirname, 'src/index.ts'),
 
 		devtool: mode === 'development' && 'source-map',
 
@@ -24,13 +24,13 @@ module.exports = (mode = 'development') => {
 		resolve: {
 			extensions: ['.ts', '.js'],
 			alias: {
-				shared: path.resolve(__dirname, '../shared/'),
+				shared: path.resolve(_dirname, '../shared/'),
 			},
 		},
 
 		plugins: [
 			new HtmlWebpackPlugin({
-				template: path.resolve(__dirname, 'index.html'),
+				template: path.resolve(_dirname, 'index.html'),
 			}),
 		],
 	};

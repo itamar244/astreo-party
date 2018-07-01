@@ -21,6 +21,7 @@ app.stage.scale.y = -1;
 // prettier-ignore
 const game = new Game(app, [
 	{ left: 'ArrowLeft', right: 'ArrowRight', shoot: 'Space' },
+	{ left: 'KeyA', right: 'KeyD', shoot: 'KeyS' },
 ]);
 
 app.ticker.add(delta => {
