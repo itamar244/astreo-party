@@ -8,17 +8,16 @@ function keyPressController(
 	dir: Direction,
 	shipController: ShipController,
 ) {
-	return keyListener(
-		key,
-		() => {
+	return keyListener(key, {
+		onKeyDown: () => {
 			if (shipController.turn === Direction.STRAIGHT) {
 				shipController.updateTurn(dir);
 			}
 		},
-		() => {
+		onKeyUp: () => {
 			shipController.updateTurn(Direction.STRAIGHT);
 		},
-	);
+	});
 }
 
 export default function initPlayer(
@@ -37,13 +36,9 @@ export default function initPlayer(
 		Direction.RIGHT,
 		shipController,
 	);
-	const stopShoot = keyListener(
-		keys.shoot,
-		() => {
-			gameController.shoot(shipID);
-		},
-		() => {},
-	);
+	const stopShoot = keyListener(keys.shoot, () => {
+		gameController.shoot(shipID);
+	});
 
 	return () => {
 		stopLeft();
