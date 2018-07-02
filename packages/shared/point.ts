@@ -3,7 +3,7 @@
 // also some other point's utils.
 export interface PointLike {
 	readonly x: number;
-	y: number;
+	readonly y: number;
 }
 
 export default class Point implements PointLike {
@@ -23,18 +23,20 @@ export default class Point implements PointLike {
 		return new Point(this.x - from.x, this.y - from.y);
 	}
 
-	rotate(angle: number, center: PointLike) {
+	rotate(angle: number) {
 		if (angle === 0) {
 			return this.clone();
 		}
 
 		const sin = Math.sin(angle);
 		const cos = Math.cos(angle);
-		const point = this.subtract(center);
 
-		return new Point(
-			point.x * cos - point.y * sin,
-			point.x * sin + point.y * cos,
-		).add(center);
+		return new Point(this.x * cos - this.y * sin, this.x * sin + this.y * cos);
+	}
+
+	rotateAround(angle: number, center: PointLike) {
+		return this.subtract(center)
+			.rotate(angle)
+			.add(center);
 	}
 }

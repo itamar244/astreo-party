@@ -17,6 +17,11 @@ export enum Direction {
 
 export const SHIP_HEIGHT = 45;
 export const SHIP_WIDTH = 30;
+export const SHIP_POLYGON = [
+	new Point(0, +SHIP_HEIGHT / 2),
+	new Point(-SHIP_WIDTH / 2, -SHIP_HEIGHT / 2),
+	new Point(+SHIP_WIDTH / 2, -SHIP_HEIGHT / 2),
+];
 const MAX_AVAILABLE_BULLETS = 3;
 const FRAMES_UNTIL_RECHARGE = 60;
 
@@ -83,17 +88,8 @@ export default class ShipController extends MovableController {
 
 	toPolygon(): Point[] {
 		const angle = this.rotation * PI_2;
+		const center = new Point(this.x, this.y);
 
-		return [
-			new Point(this.x, this.y + SHIP_HEIGHT / 2).rotate(angle, this),
-			new Point(this.x - SHIP_WIDTH / 2, this.y - SHIP_HEIGHT / 2).rotate(
-				angle,
-				this,
-			),
-			new Point(this.x + SHIP_WIDTH / 2, this.y - SHIP_HEIGHT / 2).rotate(
-				angle,
-				this,
-			),
-		];
+		return SHIP_POLYGON.map(point => point.rotate(angle).add(center));
 	}
 }

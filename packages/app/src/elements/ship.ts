@@ -3,27 +3,25 @@ import { PI_2 } from '@pixi/math';
 import ShipController, {
 	SHIP_HEIGHT,
 	SHIP_WIDTH,
+	SHIP_POLYGON,
 } from 'shared/ship-controller';
 import Element from './base';
 import { BLUE, Color, WHITE } from '../colors';
 
-// prettier-ignore
-const POLYGON_DEFAULT = [
-	0, +SHIP_HEIGHT / 2,
-	-SHIP_WIDTH / 2, -SHIP_HEIGHT / 2,
-	+SHIP_WIDTH / 2, -SHIP_HEIGHT / 2,
-	0, +SHIP_HEIGHT / 2,
-];
+const SHIP_POLYGON_AS_NUMBERS = [];
+[...SHIP_POLYGON, SHIP_POLYGON[0]].forEach(point => {
+	SHIP_POLYGON_AS_NUMBERS.push(point.x, point.y);
+});
 
 export function createShip(color: Color, initialX: number, initialY: number) {
 	const ship = new Graphics(false);
 
 	ship.beginFill(color);
 	ship.lineStyle(3, WHITE);
-	ship.drawPolygon(POLYGON_DEFAULT);
 
 	ship.position.x = initialX;
 	ship.position.y = initialY;
+		ship.drawPolygon(SHIP_POLYGON_AS_NUMBERS);
 
 	return ship;
 }
