@@ -39,7 +39,7 @@ export default class ScoreBoard {
 			return;
 		}
 
-		let next = score + change;
+		const next = score + change;
 		this._scores.set(ship, next < 0 ? 0 : next);
 	}
 }

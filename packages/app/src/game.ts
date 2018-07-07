@@ -1,11 +1,11 @@
 import { Application } from '@pixi/app';
-import { GameController, BulletController, ShipController } from 'shared/index';
 import { Container } from '@pixi/core';
+import { BulletController, GameController, ShipController } from 'shared/index';
 import { forEachWithBreak } from 'shared/utils';
-import initPlayer, { PlayerKeyOptions } from './player';
 import Element from './elements/base';
-import ShipElement from './elements/ship';
 import BulletElement from './elements/bullet';
+import ShipElement from './elements/ship';
+import initPlayer, { PlayerKeyOptions } from './player';
 
 export default class Game {
 	private readonly _controller: GameController;

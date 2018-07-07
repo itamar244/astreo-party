@@ -1,10 +1,10 @@
 type EventListener = (e: KeyboardEvent) => any;
-type Options = {
+interface Options {
 	doublePressThreshhold?: number;
 	onKeyDown?: EventListener;
 	onDoubleKeyDown?: EventListener;
 	onKeyUp?: EventListener;
-};
+}
 
 export default function keyListener(key: string, onKeyDown: EventListener);
 export default function keyListener(key: string, options: Options);
@@ -19,11 +19,11 @@ export default function keyListener(
 	const {
 		onKeyDown,
 		doublePressThreshhold = 200,
-		onDoubleKeyDown = undefined,
-		onKeyUp = undefined,
+		onDoubleKeyDown,
+		onKeyUp,
 	} = options;
 
-	const listeners: [string, EventListener][] = [];
+	const listeners: Array<[string, EventListener]> = [];
 	const addListener = (type: string, listener: EventListener) => {
 		listeners.push([type, listener]);
 		window.addEventListener(type, listener, { passive: true });
@@ -44,7 +44,7 @@ export default function keyListener(
 		let lastPressTime = 0;
 
 		addListener('keydown', event => {
-			let pressTime = Date.now();
+			const pressTime = Date.now();
 			if (!doublePressed && event.code === key) {
 				doublePressed = true;
 				if (pressTime - lastPressTime <= doublePressThreshhold) {

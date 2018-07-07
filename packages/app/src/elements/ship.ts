@@ -2,11 +2,11 @@ import { Graphics } from '@pixi/graphics';
 import { PI_2 } from '@pixi/math';
 import ShipController, {
 	SHIP_HEIGHT,
-	SHIP_WIDTH,
 	SHIP_POLYGON,
+	SHIP_WIDTH,
 } from 'shared/ship-controller';
-import Element from './base';
 import { BLUE, WHITE } from '../colors';
+import Element from './base';
 
 const SHIP_POLYGON_AS_NUMBERS = [];
 [...SHIP_POLYGON, SHIP_POLYGON[0]].forEach(point => {

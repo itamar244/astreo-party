@@ -16,7 +16,7 @@ export enum Direction {
 }
 
 export const SHIP_HEIGHT = 45;
-export const SHIP_WIDTH = 30;
+export const SHIP_WIDTH = 35;
 export const SHIP_POLYGON = [
 	new Point(0, +SHIP_HEIGHT / 2),
 	new Point(-SHIP_WIDTH / 2, -SHIP_HEIGHT / 2),

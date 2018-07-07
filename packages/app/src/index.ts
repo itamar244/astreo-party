@@ -1,12 +1,14 @@
-import { Renderer } from '@pixi/core';
 import { Application } from '@pixi/app';
+import { Renderer } from '@pixi/core';
 import { GraphicsRenderer } from '@pixi/graphics';
 import Game from './game';
 
 import './styles/main.css';
 
 // @ts-ignore
-if (module.hot) module.hot.accept();
+if (module.hot) {
+	module.hot.accept();
+}
 
 Renderer.registerPlugin('graphics', GraphicsRenderer);
 

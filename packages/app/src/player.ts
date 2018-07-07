@@ -1,7 +1,11 @@
-import { GameController, ShipController, Direction } from 'shared/index';
+import { Direction, GameController, ShipController } from 'shared/index';
 import keyListener from './key-listener';
 
-export type PlayerKeyOptions = { left: string; right: string; shoot: string };
+export interface PlayerKeyOptions {
+	left: string;
+	right: string;
+	shoot: string;
+}
 
 function keyPressController(
 	key: string,
