@@ -1,5 +1,7 @@
 import { Application } from '@pixi/app';
 import { GameController, BulletController, ShipController } from 'shared/index';
+import { Container } from '@pixi/core';
+import { forEachWithBreak } from 'shared/utils';
 import initPlayer, { PlayerKeyOptions } from './player';
 import Element from './elements/base';
 import ShipElement from './elements/ship';
@@ -7,7 +9,7 @@ import BulletElement from './elements/bullet';
 
 export default class Game {
 	private readonly _controller: GameController;
-	private readonly _elements: Element<any, any>[] = [];
+	private readonly _elements = new Set<Element>();
 
 	constructor(app: Application, playersKeys: PlayerKeyOptions[]) {
 		this._controller = GameController.createRandomGame(
@@ -15,31 +17,44 @@ export default class Game {
 			app.renderer.width,
 			app.renderer.height,
 		);
+		this._controller.initLivingShips();
 
 		this._controller.shipsForEach(shipController => {
 			const ship = new ShipElement(shipController);
 			app.stage.addChild(ship.display());
-			this._elements.push(ship);
+			this._elements.add(ship);
 		});
 
 		playersKeys.forEach((playerKeys, i) => {
 			initPlayer(i, playerKeys, this._controller);
 		});
+	}
 
+	initControllerListeners(stage: Container): void {
 		this._controller.on(
 			'bullet-added',
 			(bulletController: BulletController) => {
 				const bullet = new BulletElement(bulletController);
-				app.stage.addChild(bullet.display());
-				this._elements.push(bullet);
+				stage.addChild(bullet.display());
+				this._elements.add(bullet);
 			},
 		);
+
+		this._controller.on('ship-killed', (ship: ShipController) => {
+			forEachWithBreak(this._elements.values(), (element, breaker) => {
+				if (element.isElementOfController(ship)) {
+					element.display().destroy();
+					this._elements.delete(element);
+					breaker();
+				}
+			});
+		});
 	}
 
 	tick(delta: number): void {
 		this._controller.tick(delta);
-		for (let i = 0; i < this._elements.length; i++) {
-			this._elements[i].flush();
-		}
+		this._elements.forEach(element => {
+			element.flush();
+		});
 	}
 }

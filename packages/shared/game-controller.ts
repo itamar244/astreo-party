@@ -1,5 +1,7 @@
 import { EventEmitter } from 'events';
 import BulletController from './bullet-controller';
+import { getBulletToShipCollision } from './collision';
+import ScoreBoard from './score-board';
 import ShipController, { ShipOptions } from './ship-controller';
 import Ticker from './ticker';
 import { randomNumber } from './utils';
@@ -22,8 +24,10 @@ export default class GameController extends EventEmitter implements Ticker {
 	}
 
 	private readonly _shipsByID: { [key: number]: ShipController } = {};
+	private readonly _scoreBoard: ScoreBoard;
 	private readonly _bullets = new Set<BulletController>();
 	private readonly _ships = new Set<ShipController>();
+	private _livingShips!: Set<ShipController>;
 
 	constructor(shipsOptions: ShipOptions[]) {
 		super();
@@ -32,14 +36,26 @@ export default class GameController extends EventEmitter implements Ticker {
 			this._shipsByID[ship.id] = ship;
 			this._ships.add(ship);
 		}
+		this._scoreBoard = new ScoreBoard(6, this._ships);
+	}
+
+	initLivingShips() {
+		this._livingShips = new Set(this._ships);
 	}
 
 	tick(delta: number) {
-		this._ships.forEach(ship => {
+		this._livingShips.forEach(ship => {
 			ship.tick(delta);
 		});
+
 		this._bullets.forEach(bullet => {
 			bullet.tick(delta);
+			const hitShips = getBulletToShipCollision(bullet, this._ships);
+			hitShips.forEach(ship => {
+				this._scoreBoard.updateFromKill(bullet, ship);
+				this._livingShips.delete(ship);
+				this.emit('ship-killed', ship);
+			});
 		});
 	}
 

@@ -2,8 +2,8 @@ import { DisplayObject } from '@pixi/display';
 import MoveableController from 'shared/movable-controller';
 
 export default abstract class Element<
-	Display extends DisplayObject,
-	Controller extends MoveableController
+	Display extends DisplayObject = DisplayObject,
+	Controller extends MoveableController = MoveableController
 > {
 	protected readonly _display: Display;
 	protected readonly _controller: Controller;
@@ -22,5 +22,9 @@ export default abstract class Element<
 
 	flush(): void {
 		this._display.position.set(this._controller.x, this._controller.y);
+	}
+
+	isElementOfController(controller: Controller): boolean {
+		return this._controller === controller;
 	}
 }

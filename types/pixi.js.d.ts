@@ -4359,7 +4359,7 @@ declare module 'pixi.js' {
 }
 
 declare module '@pixi/core' {
-	export { Renderer } from 'pixi.js';
+	export { Renderer, Container } from 'pixi.js';
 }
 
 declare module '@pixi/app' {
