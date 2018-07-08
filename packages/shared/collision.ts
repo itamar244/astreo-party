@@ -30,11 +30,11 @@ export function getBulletToShipCollision(
 ) {
 	const hitShips = new Set<ShipController>();
 
-	ships.forEach(ship => {
+	for (const ship of ships) {
 		if (polygonContains(ship.toPolygon(), bullet.x, bullet.y)) {
 			hitShips.add(ship);
 		}
-	});
+	}
 
 	return hitShips;
 }

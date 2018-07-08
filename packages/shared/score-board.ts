@@ -8,9 +8,9 @@ export default class ScoreBoard {
 	constructor(scoreForWinning: number, ships: Set<ShipController>) {
 		this._scoreForWinning = scoreForWinning;
 
-		ships.forEach(ship => {
+		for (const ship of ships) {
 			this._scores.set(ship, 0);
-		});
+		}
 	}
 
 	updateFromKill(bullet: BulletController, ship: ShipController) {
@@ -21,14 +21,14 @@ export default class ScoreBoard {
 		let maxShip = null;
 		let maxScore = 0;
 
-		this._scores.forEach((score, ship) => {
+		for (const [ship, score] of this._scores) {
 			if (score > maxScore) {
 				maxShip = ship;
 				maxScore = score;
 			} else if (maxShip !== null && score === maxScore) {
 				maxShip = null;
 			}
-		});
+		}
 
 		return maxScore >= this._scoreForWinning ? maxShip : null;
 	}

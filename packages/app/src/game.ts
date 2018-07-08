@@ -1,7 +1,6 @@
 import { Application } from '@pixi/app';
 import { Container } from '@pixi/core';
 import { BulletController, GameController, ShipController } from 'shared/index';
-import { forEachWithBreak } from 'shared/utils';
 import Element from './elements/base';
 import BulletElement from './elements/bullet';
 import ShipElement from './elements/ship';
@@ -18,6 +17,7 @@ export default class Game {
 			app.renderer.height,
 		);
 		this._controller.initLivingShips();
+		this.initControllerListeners(app.stage);
 
 		this._controller.shipsForEach(shipController => {
 			const ship = new ShipElement(shipController);
@@ -25,9 +25,10 @@ export default class Game {
 			this._elements.add(ship);
 		});
 
-		playersKeys.forEach((playerKeys, i) => {
+		for (const [i, playerKeys] of playersKeys.entries()) {
 			initPlayer(i, playerKeys, this._controller);
-		});
+		}
+
 	}
 
 	initControllerListeners(stage: Container): void {
@@ -41,20 +42,20 @@ export default class Game {
 		);
 
 		this._controller.on('ship-killed', (ship: ShipController) => {
-			forEachWithBreak(this._elements.values(), (element, breaker) => {
+			for (const element of this._elements) {
 				if (element.isElementOfController(ship)) {
 					element.display().destroy();
 					this._elements.delete(element);
-					breaker();
+					return;
 				}
-			});
+			}
 		});
 	}
 
 	tick(delta: number): void {
 		this._controller.tick(delta);
-		this._elements.forEach(element => {
+		for (const element of this._elements) {
 			element.flush();
-		});
+		}
 	}
 }

@@ -65,8 +65,8 @@ export default function keyListener(
 	});
 
 	return () => {
-		for (let i = 0; i < listeners.length; i++) {
-			window.removeEventListener(listeners[i][0], listeners[i][1]);
+		for (const listener of listeners) {
+			window.removeEventListener(listener[0], listener[1]);
 		}
 	};
 }

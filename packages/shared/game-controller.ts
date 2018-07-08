@@ -44,19 +44,19 @@ export default class GameController extends EventEmitter implements Ticker {
 	}
 
 	tick(delta: number) {
-		this._livingShips.forEach(ship => {
+		for (const ship of this._livingShips) {
 			ship.tick(delta);
-		});
+		}
 
-		this._bullets.forEach(bullet => {
+		for (const bullet of this._bullets) {
 			bullet.tick(delta);
 			const hitShips = getBulletToShipCollision(bullet, this._ships);
-			hitShips.forEach(ship => {
+			for (const ship of hitShips) {
 				this._scoreBoard.updateFromKill(bullet, ship);
 				this._livingShips.delete(ship);
 				this.emit('ship-killed', ship);
-			});
-		});
+			}
+		}
 	}
 
 	getShipById(shipID: number) {
