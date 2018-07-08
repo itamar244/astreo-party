@@ -14,7 +14,7 @@ const SHIP_POLYGON_AS_NUMBERS = [];
 });
 
 export default class ShipElement extends Element<Graphics, ShipController> {
-	protected _init() {
+	_init() {
 		const ship = new Graphics(false);
 
 		// TODO: should check player color

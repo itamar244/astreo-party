@@ -4,7 +4,7 @@ import { YELLOW } from '../colors';
 import Element from './base';
 
 export default class BulletElement extends Element<Graphics, BulletController> {
-	protected _init() {
+	_init() {
 		const circle = new Graphics();
 
 		circle.beginFill(YELLOW);

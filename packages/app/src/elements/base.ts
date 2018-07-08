@@ -14,8 +14,6 @@ export default abstract class Element<
 		this.flush();
 	}
 
-	protected abstract _init(): Display;
-
 	display(): Display {
 		return this._display;
 	}
@@ -27,4 +25,6 @@ export default abstract class Element<
 	isElementOfController(controller: Controller): boolean {
 		return this._controller === controller;
 	}
+
+	protected abstract _init(): Display;
 }

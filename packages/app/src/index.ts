@@ -6,16 +6,14 @@ import Game from './game';
 import './styles/main.css';
 
 // @ts-ignore
-if (module.hot) {
-	module.hot.accept();
-}
+if (module.hot) { module.hot.accept(); }
 
 Renderer.registerPlugin('graphics', GraphicsRenderer);
 
 const app = new Application({
-	view: document.querySelector('.game-wrapper'),
-	transparent: false,
 	resolution: 1,
+	transparent: false,
+	view: document.querySelector('.game-wrapper'),
 });
 app.stage.position.y = app.renderer.height / app.renderer.resolution;
 app.stage.scale.y = -1;

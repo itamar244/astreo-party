@@ -6,8 +6,6 @@ interface Options {
 	onKeyUp?: EventListener;
 }
 
-export default function keyListener(key: string, onKeyDown: EventListener);
-export default function keyListener(key: string, options: Options);
 export default function keyListener(
 	key: string,
 	_optionsOrOnKeyDown: Options | EventListener,
@@ -31,7 +29,6 @@ export default function keyListener(
 
 	let pressed = false;
 	let doublePressed = false;
-	let keydown;
 
 	addListener('keydown', event => {
 		if (!pressed && event.code === key) {
