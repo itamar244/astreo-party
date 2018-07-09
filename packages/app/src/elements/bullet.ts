@@ -1,5 +1,5 @@
 import { Graphics } from '@pixi/graphics';
-import BulletController from 'shared/bullet-controller';
+import BulletController from 'shared/controllers/bullet';
 import { YELLOW } from '../colors';
 import Element from './base';
 

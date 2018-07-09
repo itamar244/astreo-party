@@ -1,7 +1,7 @@
 import { PI_2 } from '@pixi/math';
-import BulletController from './bullet-controller';
-import MovableController from './movable-controller';
-import Point from './point';
+import BulletController from './bullet';
+import MovableController from './movable';
+import Point from '../point';
 
 export interface ShipOptions {
 	x: number;

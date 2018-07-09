@@ -1,5 +1,5 @@
 import { DisplayObject } from '@pixi/display';
-import MoveableController from 'shared/movable-controller';
+import MoveableController from 'shared/controllers/movable';
 
 export default abstract class Element<
 	Display extends DisplayObject = DisplayObject,

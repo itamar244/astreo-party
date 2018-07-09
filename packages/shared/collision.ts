@@ -1,6 +1,6 @@
-import BulletController from './bullet-controller';
+import BulletController from './controllers/bullet';
 import Point from './point';
-import ShipController, { SHIP_HEIGHT } from './ship-controller';
+import ShipController, { SHIP_HEIGHT } from './controllers/ship';
 
 function polygonContains(polygon: Point[], x: number, y: number) {
 	let inside = false;

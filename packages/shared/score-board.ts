@@ -1,5 +1,5 @@
-import BulletController from './bullet-controller';
-import ShipController from './ship-controller';
+import BulletController from './controllers/bullet';
+import ShipController from './controllers/ship';
 
 export default class ScoreBoard {
 	private _scores = new Map<ShipController, number>();

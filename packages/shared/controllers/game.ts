@@ -1,10 +1,11 @@
+// the top controller
 import { EventEmitter } from 'events';
-import BulletController from './bullet-controller';
-import { getBulletToShipCollision } from './collision';
-import ScoreBoard from './score-board';
-import ShipController, { ShipOptions } from './ship-controller';
-import Ticker from './ticker';
-import { randomNumber } from './utils';
+import BulletController from './bullet';
+import { getBulletToShipCollision } from '../collision';
+import ScoreBoard from '../score-board';
+import ShipController, { ShipOptions } from './ship';
+import Ticker from '../ticker';
+import { randomNumber } from '../utils';
 
 export default class GameController extends EventEmitter implements Ticker {
 	static createRandomGame(

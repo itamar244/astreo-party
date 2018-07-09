@@ -1,5 +1,5 @@
-import MovableController, { getProgress } from './movable-controller';
-import ShipController, { SHIP_HEIGHT } from './ship-controller';
+import MovableController, { getProgress } from './movable';
+import ShipController, { SHIP_HEIGHT } from './ship';
 
 export const BULLET_RADIUS = 5;
 

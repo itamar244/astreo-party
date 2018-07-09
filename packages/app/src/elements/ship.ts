@@ -4,7 +4,7 @@ import ShipController, {
 	SHIP_HEIGHT,
 	SHIP_POLYGON,
 	SHIP_WIDTH,
-} from 'shared/ship-controller';
+} from 'shared/controllers/ship';
 import { BLUE, WHITE } from '../colors';
 import Element from './base';
 

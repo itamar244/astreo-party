@@ -1,6 +1,6 @@
 export { default as Ticker } from './ticker';
-export { default as GameController } from './game-controller';
-export { default as ShipController } from './ship-controller';
-export * from './ship-controller';
-export { default as BulletController } from './bullet-controller';
-export * from './bullet-controller';
+export { default as GameController } from './controllers/game';
+export { default as ShipController } from './controllers/ship';
+export * from './controllers/ship';
+export { default as BulletController } from './controllers/bullet';
+export * from './controllers/bullet';

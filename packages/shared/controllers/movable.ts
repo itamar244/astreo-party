@@ -1,5 +1,5 @@
 import { PI_2 } from '@pixi/math';
-import Ticker from './ticker';
+import Ticker from '../ticker';
 
 function angleFromRotation(rotation: number) {
 	return (rotation + 0.25) * PI_2;
