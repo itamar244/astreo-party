@@ -20,19 +20,19 @@ export function getProgress(rotation: number, progress: number) {
 	];
 }
 
-export interface MovableController {
+export interface MovableState {
 	x: number;
 	y: number;
 	rotation: number;
 	speed: number;
 }
 
-export function tick(controller: MovableController, delta: number) {
+export function tick(controller: MovableState, delta: number) {
 	move(controller, controller.rotation, delta);
 }
 
 export function move(
-	controller: MovableController,
+	controller: MovableState,
 	rotation: number,
 	delta: number,
 ) {

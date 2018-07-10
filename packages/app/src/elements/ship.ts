@@ -4,7 +4,7 @@ import {
 	SHIP_HEIGHT,
 	SHIP_POLYGON,
 	SHIP_WIDTH,
-	ShipController,
+	ShipState,
 } from 'shared/controllers/ship';
 import { BLUE, WHITE } from '../colors';
 import Element from './base';
@@ -14,7 +14,7 @@ const SHIP_POLYGON_AS_NUMBERS = [];
 	SHIP_POLYGON_AS_NUMBERS.push(point.x, point.y);
 });
 
-export default class ShipElement extends Element<Graphics, ShipController> {
+export default class ShipElement extends Element<Graphics, ShipState> {
 	_init() {
 		const ship = new Graphics(false);
 

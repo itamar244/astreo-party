@@ -1,14 +1,14 @@
-import { getProgress, MovableController, move, tick } from './movable';
-import { SHIP_HEIGHT, ShipController } from './ship';
+import { getProgress, MovableState, move, tick } from './movable';
+import { SHIP_HEIGHT, ShipState } from './ship';
 
 export const BULLET_RADIUS = 5;
 
-export interface BulletController extends MovableController {
+export interface BulletState extends MovableState {
 	owner: number;
 	radius: number;
 }
 
-export function createBulletFromShip(owner: ShipController) {
+export function createBulletFromShip(owner: ShipState) {
 	const [x, y] = getProgress(owner.rotation, SHIP_HEIGHT / 2);
 
 	return {

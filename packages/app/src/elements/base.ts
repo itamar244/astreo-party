@@ -1,14 +1,14 @@
 import { DisplayObject } from '@pixi/display';
-import { MovableController } from 'shared/controllers/movable';
+import { MovableState } from 'shared/controllers/movable';
 
 export default abstract class Element<
 	Display extends DisplayObject = DisplayObject,
-	Controller extends MovableController = MovableController
+	State extends MovableState = MovableState
 > {
 	protected readonly _display: Display;
-	protected readonly _controller: Controller;
+	protected readonly _controller: State;
 
-	constructor(controller: Controller) {
+	constructor(controller: State) {
 		this._controller = controller;
 		this._display = this._init();
 		this.flush();
@@ -22,7 +22,7 @@ export default abstract class Element<
 		this._display.position.set(this._controller.x, this._controller.y);
 	}
 
-	isElementOfController(controller: Controller): boolean {
+	isElementOfState(controller: State): boolean {
 		return this._controller === controller;
 	}
 

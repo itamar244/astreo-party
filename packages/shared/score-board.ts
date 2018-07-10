@@ -1,5 +1,5 @@
-import { BulletController } from './controllers/bullet';
-import { ShipController } from './controllers/ship';
+import { BulletState } from './controllers/bullet';
+import { ShipState } from './controllers/ship';
 
 export interface ScoreBoard {
 	scores: { [id: number]: number };
@@ -8,7 +8,7 @@ export interface ScoreBoard {
 
 export function createScoreBoard(
 	scoreForWinning: number,
-	ships: ShipController[],
+	ships: ShipState[],
 ): ScoreBoard {
 	const scores = [];
 
@@ -24,8 +24,8 @@ export function createScoreBoard(
 
 export function updateFromKill(
 	scoreBoard: ScoreBoard,
-	bullet: BulletController,
-	ship: ShipController,
+	bullet: BulletState,
+	ship: ShipState,
 ) {
 	updateById(scoreBoard, ship, ship.id !== bullet.owner ? 1 : -1);
 }
@@ -48,11 +48,7 @@ export function getWinner(scoreBoard: ScoreBoard): number {
 	return maxScore >= scoreBoard.scoreForWinning ? maxShip : null;
 }
 
-function updateById(
-	scoreBoard: ScoreBoard,
-	ship: ShipController,
-	change: number,
-) {
+function updateById(scoreBoard: ScoreBoard, ship: ShipState, change: number) {
 	const score = scoreBoard.scores[ship.id];
 	if (score === undefined) {
 		return;

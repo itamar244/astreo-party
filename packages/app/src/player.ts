@@ -8,12 +8,7 @@ export interface PlayerKeyOptions {
 	shoot: string;
 }
 
-function keyPressController(
-	key: string,
-	id: number,
-	dir: Direction,
-	game: Game,
-) {
+function keyPressState(key: string, id: number, dir: Direction, game: Game) {
 	return keyListener(key, {
 		onKeyDown: () => {
 			game.updateTurnById(id, dir);
@@ -29,18 +24,8 @@ export default function initPlayer(
 	keys: PlayerKeyOptions,
 	game: Game,
 ) {
-	const stopLeft = keyPressController(
-		keys.left,
-		shipID,
-		Direction.LEFT,
-		game,
-	);
-	const stopRight = keyPressController(
-		keys.right,
-		shipID,
-		Direction.RIGHT,
-		game,
-	);
+	const stopLeft = keyPressState(keys.left, shipID, Direction.LEFT, game);
+	const stopRight = keyPressState(keys.right, shipID, Direction.RIGHT, game);
 	const stopShoot = keyListener(keys.shoot, () => {
 		game.shoot(shipID);
 	});

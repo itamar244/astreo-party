@@ -1,9 +1,9 @@
 import { Graphics } from '@pixi/graphics';
-import { BulletController } from 'shared/controllers/bullet';
+import { BulletState } from 'shared/controllers/bullet';
 import { YELLOW } from '../colors';
 import Element from './base';
 
-export default class BulletElement extends Element<Graphics, BulletController> {
+export default class BulletElement extends Element<Graphics, BulletState> {
 	_init() {
 		const circle = new Graphics();
 

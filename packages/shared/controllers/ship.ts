@@ -1,7 +1,7 @@
 import { PI_2 } from '@pixi/math';
 import Point from '../point';
-import { BulletController, createBulletFromShip } from './bullet';
-import { MovableController, tick as movableTick } from './movable';
+import { BulletState, createBulletFromShip } from './bullet';
+import { MovableState, tick as movableTick } from './movable';
 
 export interface ShipOptions {
 	x: number;
@@ -25,7 +25,7 @@ export const SHIP_POLYGON = [
 const MAX_AVAILABLE_BULLETS = 3;
 const FRAMES_UNTIL_RECHARGE = 60;
 
-export interface ShipController extends MovableController {
+export interface ShipState extends MovableState {
 	// _rotationBeforeTurn: number;
 	// _turnSince: number;
 	id: number;
@@ -45,7 +45,7 @@ export function createShip(id: number, options: ShipOptions) {
 	};
 }
 
-export function shipToPolygon(ship: ShipController): Point[] {
+export function shipToPolygon(ship: ShipState): Point[] {
 	const angle = ship.rotation * PI_2;
 	const center = new Point(ship.x, ship.y);
 
@@ -53,7 +53,7 @@ export function shipToPolygon(ship: ShipController): Point[] {
 }
 
 export const shipUpdators = {
-	tick(ship: ShipController, delta: number) {
+	tick(ship: ShipState, delta: number) {
 		// if (ship.turnSince > 0) {
 		// 	ship.turnSince -= 1;
 		// } else {
@@ -84,7 +84,7 @@ export const shipUpdators = {
 		}
 	},
 
-	updateTurn(ship: ShipController, dir: Direction) {
+	updateTurn(ship: ShipState, dir: Direction) {
 		// if (dir === Direction.STRAIGHT) {
 		// 	ship.turnSince = 0;
 		// } else {
@@ -95,7 +95,7 @@ export const shipUpdators = {
 	},
 
 	// should be used internaly
-	shoot(ship: ShipController) {
+	shoot(ship: ShipState) {
 		if (ship.availableBullets > 0) {
 			ship.availableBullets -= 1;
 			return createBulletFromShip(ship);

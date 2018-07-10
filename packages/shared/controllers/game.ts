@@ -3,26 +3,26 @@ import { getBulletToShipCollision } from '../collision';
 import { createScoreBoard, ScoreBoard, updateFromKill } from '../score-board';
 import Ticker from '../ticker';
 import { randomNumber, removeItemFromArray } from '../utils';
-import { BulletController, bulletUpdators } from './bullet';
+import { BulletState, bulletUpdators } from './bullet';
 import {
 	createShip,
 	Direction,
-	ShipController,
+	ShipState,
 	ShipOptions,
 	shipUpdators,
 } from './ship';
 
-export interface GameController {
-	bullets: BulletController[];
-	livingShips: ShipController[];
+export interface GameState {
+	bullets: BulletState[];
+	livingShips: ShipState[];
 	scoreBoard: ScoreBoard;
-	shipsByID: { [key: number]: ShipController };
-	ships: ShipController[];
+	shipsByID: { [key: number]: ShipState };
+	ships: ShipState[];
 }
 
-export function createGameController(options: ShipOptions[]): GameController {
+export function createGameState(options: ShipOptions[]): GameState {
 	const shipsByID = {};
-	const ships: ShipController[] = [];
+	const ships: ShipState[] = [];
 	for (let i = 0; i < options.length; i++) {
 		const ship = createShip(i, options[i]);
 		shipsByID[ship.id] = ship;
@@ -42,7 +42,7 @@ export function createRandomGame(
 	ships: number,
 	width: number,
 	height: number,
-): GameController {
+): GameState {
 	const options: ShipOptions[] = [];
 	for (let i = 0; i < ships; i++) {
 		options.push({
@@ -51,15 +51,15 @@ export function createRandomGame(
 			y: randomNumber(0, height),
 		});
 	}
-	return createGameController(options);
+	return createGameState(options);
 }
 
 export const gameUpdators = {
-	initLivingShips(game: GameController) {
+	initLivingShips(game: GameState) {
 		game.livingShips = game.ships.slice();
 	},
 
-	tick(game: GameController, delta: number): ShipController[] {
+	tick(game: GameState, delta: number): ShipState[] {
 		const killedShips = [];
 		for (const ship of game.livingShips) {
 			shipUpdators.tick(ship, delta);
@@ -77,16 +77,15 @@ export const gameUpdators = {
 		return killedShips;
 	},
 
-	updateTurnByID(game: GameController, id: number, dir: Direction) {
+	updateTurnByID(game: GameState, id: number, dir: Direction) {
 		shipUpdators.updateTurn(game.shipsByID[id], dir);
 	},
 
-	shoot(game: GameController, shipID: number) {
+	shoot(game: GameState, shipID: number) {
 		const bullet = shipUpdators.shoot(game.shipsByID[shipID]);
 		if (bullet !== null) {
 			game.bullets.push(bullet);
 		}
 		return bullet;
 	},
-
 };
