@@ -1,7 +1,7 @@
 import { PI_2 } from '@pixi/math';
-import BulletController from './bullet';
-import MovableController from './movable';
 import Point from '../point';
+import { BulletController, createBulletFromShip } from './bullet';
+import { MovableController, tick as movableTick } from './movable';
 
 export interface ShipOptions {
 	x: number;
@@ -25,71 +25,81 @@ export const SHIP_POLYGON = [
 const MAX_AVAILABLE_BULLETS = 3;
 const FRAMES_UNTIL_RECHARGE = 60;
 
-export default class ShipController extends MovableController {
-	public turn: Direction = Direction.STRAIGHT;
-	private _availableBullets: number = MAX_AVAILABLE_BULLETS;
-	private _sinceLastShot: number = 0;
-	// private _rotationBeforeTurn: number = 0;
-	// private _turnSince: number = 0;
+export interface ShipController extends MovableController {
+	// _rotationBeforeTurn: number;
+	// _turnSince: number;
+	id: number;
+	turn: Direction;
+	availableBullets: number;
+	sinceLastShot: number;
+}
 
-	constructor(public readonly id: number, options: ShipOptions) {
-		super(options.x, options.y, options.rotation, 2);
-	}
+export function createShip(id: number, options: ShipOptions) {
+	return {
+		...options,
+		id,
+		availableBullets: MAX_AVAILABLE_BULLETS,
+		turn: Direction.STRAIGHT,
+		sinceLastShot: 0,
+		speed: 2,
+	};
+}
 
-	tick(delta: number) {
-		// if (this._turnSince > 0) {
-		// 	this._turnSince -= 1;
+export function shipToPolygon(ship: ShipController): Point[] {
+	const angle = ship.rotation * PI_2;
+	const center = new Point(ship.x, ship.y);
+
+	return SHIP_POLYGON.map(point => point.rotate(angle).add(center));
+}
+
+export const shipUpdators = {
+	tick(ship: ShipController, delta: number) {
+		// if (ship.turnSince > 0) {
+		// 	ship.turnSince -= 1;
 		// } else {
-		// 	this._move(this.rotation);
+		// 	ship.move(ship.rotation);
 		// }
-		super.tick(delta);
+		movableTick(ship, delta);
 
-		if (this._availableBullets < MAX_AVAILABLE_BULLETS) {
-			this._sinceLastShot += delta;
-			if (this._sinceLastShot > FRAMES_UNTIL_RECHARGE) {
-				this._availableBullets += 1;
-				this._sinceLastShot = 0;
+		if (ship.availableBullets < MAX_AVAILABLE_BULLETS) {
+			ship.sinceLastShot += delta;
+			if (ship.sinceLastShot > FRAMES_UNTIL_RECHARGE) {
+				ship.availableBullets += 1;
+				ship.sinceLastShot = 0;
 			}
 		}
 
-		if (this.turn !== Direction.STRAIGHT) {
-			if (this.turn === Direction.LEFT) {
-				this.rotation += 0.01;
-				if (this.rotation >= 1) {
-					this.rotation -= 1;
+		if (ship.turn !== Direction.STRAIGHT) {
+			if (ship.turn === Direction.LEFT) {
+				ship.rotation += 0.01;
+				if (ship.rotation >= 1) {
+					ship.rotation -= 1;
 				}
-			} else if (this.turn === Direction.RIGHT) {
-				this.rotation -= 0.01;
-				if (this.rotation <= 0) {
-					this.rotation += 1;
+			} else if (ship.turn === Direction.RIGHT) {
+				ship.rotation -= 0.01;
+				if (ship.rotation <= 0) {
+					ship.rotation += 1;
 				}
 			}
 		}
-	}
+	},
 
-	updateTurn(dir: Direction) {
+	updateTurn(ship: ShipController, dir: Direction) {
 		// if (dir === Direction.STRAIGHT) {
-		// 	this._turnSince = 0;
+		// 	ship.turnSince = 0;
 		// } else {
-		// 	this._rotationBeforeTurn = this.rotation;
-		// 	this._turnSince = 10;
+		// 	ship.rotationBeforeTurn = ship.rotation;
+		// 	ship.turnSince = 10;
 		// }
-		this.turn = dir;
-	}
+		ship.turn = dir;
+	},
 
 	// should be used internaly
-	shoot() {
-		if (this._availableBullets > 0) {
-			this._availableBullets -= 1;
-			return new BulletController(this);
+	shoot(ship: ShipController) {
+		if (ship.availableBullets > 0) {
+			ship.availableBullets -= 1;
+			return createBulletFromShip(ship);
 		}
 		return null;
-	}
-
-	toPolygon(): Point[] {
-		const angle = this.rotation * PI_2;
-		const center = new Point(this.x, this.y);
-
-		return SHIP_POLYGON.map(point => point.rotate(angle).add(center));
-	}
-}
+	},
+};

@@ -1,9 +1,10 @@
 import { Graphics } from '@pixi/graphics';
 import { PI_2 } from '@pixi/math';
-import ShipController, {
+import {
 	SHIP_HEIGHT,
 	SHIP_POLYGON,
 	SHIP_WIDTH,
+	ShipController,
 } from 'shared/controllers/ship';
 import { BLUE, WHITE } from '../colors';
 import Element from './base';

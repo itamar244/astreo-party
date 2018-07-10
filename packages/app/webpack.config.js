@@ -1,13 +1,13 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MinifyPlugin = require('babel-minify-webpack-plugin');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 module.exports = (mode = 'development') => {
 	const config = {
 		mode,
-		entry: path.resolve(_dirname, 'src/index.ts'),
+		entry: path.resolve(__dirname, 'src/index.ts'),
 
-		devtool: mode === 'development' && 'source-map',
+		devtool: mode === 'development' ? 'source-map' : false,
 
 		module: {
 			rules: [
@@ -24,19 +24,19 @@ module.exports = (mode = 'development') => {
 		resolve: {
 			extensions: ['.ts', '.js'],
 			alias: {
-				shared: path.resolve(_dirname, '../shared/'),
+				shared: path.resolve(__dirname, '../shared/'),
 			},
 		},
 
 		plugins: [
 			new HtmlWebpackPlugin({
-				template: path.resolve(_dirname, 'index.html'),
+				template: path.resolve(__dirname, 'index.html'),
 			}),
 		],
 	};
 
-	if (mode === 'production') {
-		config.plugins.push(new MinifyPlugin());
+	if (process.env.ANALYZER === '1') {
+		config.plugins.push(new BundleAnalyzerPlugin());
 	}
 
 	return config;

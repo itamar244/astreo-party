@@ -1,45 +1,63 @@
-import BulletController from './controllers/bullet';
-import ShipController from './controllers/ship';
+import { BulletController } from './controllers/bullet';
+import { ShipController } from './controllers/ship';
 
-export default class ScoreBoard {
-	private _scores = new Map<ShipController, number>();
-	private _scoreForWinning: number;
+export interface ScoreBoard {
+	scores: { [id: number]: number };
+	scoreForWinning: number;
+}
 
-	constructor(scoreForWinning: number, ships: Set<ShipController>) {
-		this._scoreForWinning = scoreForWinning;
+export function createScoreBoard(
+	scoreForWinning: number,
+	ships: ShipController[],
+): ScoreBoard {
+	const scores = [];
 
-		for (const ship of ships) {
-			this._scores.set(ship, 0);
+	for (const ship of ships) {
+		scores[ship.id] = 0;
+	}
+
+	return {
+		scores,
+		scoreForWinning,
+	};
+}
+
+export function updateFromKill(
+	scoreBoard: ScoreBoard,
+	bullet: BulletController,
+	ship: ShipController,
+) {
+	updateById(scoreBoard, ship, ship.id !== bullet.owner ? 1 : -1);
+}
+
+export function getWinner(scoreBoard: ScoreBoard): number {
+	let maxShip = null;
+	let maxScore = 0;
+
+	for (const ship of Object.keys(scoreBoard.scores)) {
+		const score = scoreBoard.scores[ship];
+		if (score > maxScore) {
+			// this change is important because `ship` is actually a string
+			maxShip = Number(ship);
+			maxScore = score;
+		} else if (maxShip !== null && score === maxScore) {
+			maxShip = null;
 		}
 	}
 
-	updateFromKill(bullet: BulletController, ship: ShipController) {
-		this._updateById(ship, ship !== bullet.owner ? 1 : -1);
+	return maxScore >= scoreBoard.scoreForWinning ? maxShip : null;
+}
+
+function updateById(
+	scoreBoard: ScoreBoard,
+	ship: ShipController,
+	change: number,
+) {
+	const score = scoreBoard.scores[ship.id];
+	if (score === undefined) {
+		return;
 	}
 
-	getWinner() {
-		let maxShip = null;
-		let maxScore = 0;
-
-		for (const [ship, score] of this._scores) {
-			if (score > maxScore) {
-				maxShip = ship;
-				maxScore = score;
-			} else if (maxShip !== null && score === maxScore) {
-				maxShip = null;
-			}
-		}
-
-		return maxScore >= this._scoreForWinning ? maxShip : null;
-	}
-
-	private _updateById(ship: ShipController, change: number) {
-		const score = this._scores.get(ship);
-		if (score === undefined) {
-			return;
-		}
-
-		const next = score + change;
-		this._scores.set(ship, next < 0 ? 0 : next);
-	}
+	const next = score + change;
+	scoreBoard.scores[ship.id] = next < 0 ? 0 : next;
 }

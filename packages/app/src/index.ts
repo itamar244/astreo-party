@@ -6,7 +6,7 @@ import Game from './game';
 import './styles/main.css';
 
 // @ts-ignore
-if (module.hot) { module.hot.accept(); }
+if (module.hot) module.hot.accept();
 
 Renderer.registerPlugin('graphics', GraphicsRenderer);
 

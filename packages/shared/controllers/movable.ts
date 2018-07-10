@@ -20,20 +20,30 @@ export function getProgress(rotation: number, progress: number) {
 	];
 }
 
-export default class MovableController implements Ticker {
-	constructor(
-		public x: number,
-		public y: number,
-		public rotation: number,
-		protected _speed: number,
-	) {}
+export interface MovableController {
+	x: number;
+	y: number;
+	rotation: number;
+	speed: number;
+}
 
-	tick(delta: number) {
-		this._move(this.rotation, delta);
-	}
+export function tick(controller: MovableController, delta: number) {
+	move(controller, controller.rotation, delta);
+}
 
-	protected _move(rotation: number, delta: number) {
-		this.x += coordinateUpdate(Math.cos, rotation, this._speed * delta);
-		this.y += coordinateUpdate(Math.sin, rotation, this._speed * delta);
-	}
+export function move(
+	controller: MovableController,
+	rotation: number,
+	delta: number,
+) {
+	controller.x += coordinateUpdate(
+		Math.cos,
+		rotation,
+		controller.speed * delta,
+	);
+	controller.y += coordinateUpdate(
+		Math.sin,
+		rotation,
+		controller.speed * delta,
+	);
 }

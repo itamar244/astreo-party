@@ -1,6 +1,6 @@
-import BulletController from './controllers/bullet';
+import { BulletController } from './controllers/bullet';
+import { SHIP_HEIGHT, ShipController, shipToPolygon } from './controllers/ship';
 import Point from './point';
-import ShipController, { SHIP_HEIGHT } from './controllers/ship';
 
 function polygonContains(polygon: Point[], x: number, y: number) {
 	let inside = false;
@@ -26,12 +26,12 @@ function polygonContains(polygon: Point[], x: number, y: number) {
 
 export function getBulletToShipCollision(
 	bullet: BulletController,
-	ships: Set<ShipController>,
+	ships: ShipController[],
 ) {
 	const hitShips = new Set<ShipController>();
 
 	for (const ship of ships) {
-		if (polygonContains(ship.toPolygon(), bullet.x, bullet.y)) {
+		if (polygonContains(shipToPolygon(ship), bullet.x, bullet.y)) {
 			hitShips.add(ship);
 		}
 	}

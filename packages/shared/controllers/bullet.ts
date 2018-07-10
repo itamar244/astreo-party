@@ -1,18 +1,27 @@
-import MovableController, { getProgress } from './movable';
-import ShipController, { SHIP_HEIGHT } from './ship';
+import { getProgress, MovableController, move, tick } from './movable';
+import { SHIP_HEIGHT, ShipController } from './ship';
 
 export const BULLET_RADIUS = 5;
 
-export default class BulletController extends MovableController {
-	public readonly owner: ShipController;
-
-	constructor(owner: ShipController) {
-		const [x, y] = getProgress(owner.rotation, SHIP_HEIGHT / 2);
-		super(owner.x + x, owner.y + y, owner.rotation, 5);
-		this.owner = owner;
-	}
-
-	get radius() {
-		return BULLET_RADIUS;
-	}
+export interface BulletController extends MovableController {
+	owner: number;
+	radius: number;
 }
+
+export function createBulletFromShip(owner: ShipController) {
+	const [x, y] = getProgress(owner.rotation, SHIP_HEIGHT / 2);
+
+	return {
+		owner: owner.id,
+		x: owner.x + x,
+		y: owner.y + y,
+		rotation: owner.rotation,
+		radius: BULLET_RADIUS,
+		speed: 5,
+	};
+}
+
+export const bulletUpdators = {
+	tick,
+	move,
+};

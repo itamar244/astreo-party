@@ -1,9 +1,9 @@
 import { DisplayObject } from '@pixi/display';
-import MoveableController from 'shared/controllers/movable';
+import { MovableController } from 'shared/controllers/movable';
 
 export default abstract class Element<
 	Display extends DisplayObject = DisplayObject,
-	Controller extends MoveableController = MoveableController
+	Controller extends MovableController = MovableController
 > {
 	protected readonly _display: Display;
 	protected readonly _controller: Controller;

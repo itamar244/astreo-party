@@ -1,4 +1,5 @@
-import { Direction, GameController, ShipController } from 'shared/index';
+import { Direction } from 'shared/index';
+import Game from './game';
 import keyListener from './key-listener';
 
 export interface PlayerKeyOptions {
@@ -9,17 +10,16 @@ export interface PlayerKeyOptions {
 
 function keyPressController(
 	key: string,
+	id: number,
 	dir: Direction,
-	shipController: ShipController,
+	game: Game,
 ) {
 	return keyListener(key, {
 		onKeyDown: () => {
-			if (shipController.turn === Direction.STRAIGHT) {
-				shipController.updateTurn(dir);
-			}
+			game.updateTurnById(id, dir);
 		},
 		onKeyUp: () => {
-			shipController.updateTurn(Direction.STRAIGHT);
+			game.updateTurnById(id, Direction.STRAIGHT);
 		},
 	});
 }
@@ -27,21 +27,22 @@ function keyPressController(
 export default function initPlayer(
 	shipID: number,
 	keys: PlayerKeyOptions,
-	gameController: GameController,
+	game: Game,
 ) {
-	const shipController = gameController.getShipById(shipID);
 	const stopLeft = keyPressController(
 		keys.left,
+		shipID,
 		Direction.LEFT,
-		shipController,
+		game,
 	);
 	const stopRight = keyPressController(
 		keys.right,
+		shipID,
 		Direction.RIGHT,
-		shipController,
+		game,
 	);
 	const stopShoot = keyListener(keys.shoot, () => {
-		gameController.shoot(shipID);
+		game.shoot(shipID);
 	});
 
 	return () => {
