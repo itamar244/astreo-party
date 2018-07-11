@@ -21,6 +21,7 @@ export function getProgress(rotation: number, progress: number) {
 }
 
 export interface MovableState {
+	id: string;
 	x: number;
 	y: number;
 	rotation: number;

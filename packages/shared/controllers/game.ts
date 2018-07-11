@@ -16,7 +16,7 @@ export interface GameState {
 	bullets: BulletState[];
 	livingShips: ShipState[];
 	scoreBoard: ScoreBoard;
-	shipsByID: { [key: number]: ShipState };
+	shipsByID: Record<string, ShipState>;
 	ships: ShipState[];
 }
 
@@ -24,7 +24,7 @@ export function createGameState(options: ShipOptions[]): GameState {
 	const shipsByID = {};
 	const ships: ShipState[] = [];
 	for (let i = 0; i < options.length; i++) {
-		const ship = createShip(i, options[i]);
+		const ship = createShip(options[i]);
 		shipsByID[ship.id] = ship;
 		ships.push(ship);
 	}
@@ -60,7 +60,7 @@ export const gameUpdators = {
 	},
 
 	tick(game: GameState, delta: number): ShipState[] {
-		const killedShips = [];
+		const removedObjects = [];
 		for (const ship of game.livingShips) {
 			shipUpdators.tick(ship, delta);
 		}
@@ -68,20 +68,24 @@ export const gameUpdators = {
 		for (const bullet of game.bullets) {
 			bulletUpdators.tick(bullet, delta);
 			const hitShips = getBulletToShipCollision(bullet, game.ships);
-			for (const ship of hitShips) {
-				updateFromKill(game.scoreBoard, bullet, ship);
-				removeItemFromArray(game.livingShips, ship);
+			if (hitShips.length > 0) {
+				removedObjects.push(bullet);
+				removeItemFromArray(game.bullets, bullet);
+				for (const ship of hitShips) {
+					updateFromKill(game.scoreBoard, bullet, ship);
+					removeItemFromArray(game.livingShips, ship);
+				}
+				removedObjects.push(...hitShips);
 			}
-			killedShips.push(...hitShips);
 		}
-		return killedShips;
+		return removedObjects;
 	},
 
-	updateTurnByID(game: GameState, id: number, dir: Direction) {
+	updateTurnByID(game: GameState, id: string, dir: Direction) {
 		shipUpdators.updateTurn(game.shipsByID[id], dir);
 	},
 
-	shoot(game: GameState, shipID: number) {
+	shoot(game: GameState, shipID: string) {
 		const bullet = shipUpdators.shoot(game.shipsByID[shipID]);
 		if (bullet !== null) {
 			game.bullets.push(bullet);

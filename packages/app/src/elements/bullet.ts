@@ -8,7 +8,7 @@ export default class BulletElement extends Element<Graphics, BulletState> {
 		const circle = new Graphics();
 
 		circle.beginFill(YELLOW);
-		circle.drawCircle(0, 0, this._controller.radius);
+		circle.drawCircle(0, 0, this._state.radius);
 
 		return circle;
 	}

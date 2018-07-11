@@ -8,7 +8,7 @@ export interface PlayerKeyOptions {
 	shoot: string;
 }
 
-function keyPressState(key: string, id: number, dir: Direction, game: Game) {
+function keyPressState(key: string, id: string, dir: Direction, game: Game) {
 	return keyListener(key, {
 		onKeyDown: () => {
 			game.updateTurnById(id, dir);
@@ -20,7 +20,7 @@ function keyPressState(key: string, id: number, dir: Direction, game: Game) {
 }
 
 export default function initPlayer(
-	shipID: number,
+	shipID: string,
 	keys: PlayerKeyOptions,
 	game: Game,
 ) {

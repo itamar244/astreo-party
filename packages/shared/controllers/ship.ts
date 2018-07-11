@@ -1,5 +1,6 @@
 import { PI_2 } from '@pixi/math';
 import Point from '../point';
+import { generateID } from '../utils';
 import { BulletState, createBulletFromShip } from './bullet';
 import { MovableState, tick as movableTick } from './movable';
 
@@ -28,16 +29,15 @@ const FRAMES_UNTIL_RECHARGE = 60;
 export interface ShipState extends MovableState {
 	// _rotationBeforeTurn: number;
 	// _turnSince: number;
-	id: number;
 	turn: Direction;
 	availableBullets: number;
 	sinceLastShot: number;
 }
 
-export function createShip(id: number, options: ShipOptions) {
+export function createShip(options: ShipOptions) {
 	return {
 		...options,
-		id,
+		id: generateID(),
 		availableBullets: MAX_AVAILABLE_BULLETS,
 		turn: Direction.STRAIGHT,
 		sinceLastShot: 0,

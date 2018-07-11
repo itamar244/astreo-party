@@ -6,10 +6,10 @@ export default abstract class Element<
 	State extends MovableState = MovableState
 > {
 	protected readonly _display: Display;
-	protected readonly _controller: State;
+	protected readonly _state: State;
 
-	constructor(controller: State) {
-		this._controller = controller;
+	constructor(state: State) {
+		this._state = state;
 		this._display = this._init();
 		this.flush();
 	}
@@ -19,11 +19,11 @@ export default abstract class Element<
 	}
 
 	flush(): void {
-		this._display.position.set(this._controller.x, this._controller.y);
+		this._display.position.set(this._state.x, this._state.y);
 	}
 
-	isElementOfState(controller: State): boolean {
-		return this._controller === controller;
+	isElementOfState(state: MovableState): boolean {
+		return this._state.id === state.id;
 	}
 
 	protected abstract _init(): Display;

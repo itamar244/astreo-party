@@ -6,7 +6,7 @@ import {
 	Direction,
 	GameState,
 	gameUpdators,
-	ShipState,
+	MovableState,
 } from 'shared/index';
 import Element from './elements/base';
 import BulletElement from './elements/bullet';
@@ -27,8 +27,9 @@ export default class Game {
 		this._stage = app.stage;
 		this._initRound();
 
-		for (const [i, playerKeys] of playersKeys.entries()) {
-			initPlayer(i, playerKeys, this);
+		const { ships } = this._state;
+		for (let i = 0; i < ships.length; i++) {
+			initPlayer(ships[i].id, playersKeys[i], this);
 		}
 	}
 
@@ -42,10 +43,12 @@ export default class Game {
 		}
 	}
 
-	private _killShips(ships: ShipState[]) {
-		for (const ship of ships) {
+	private _removeElements(states: MovableState[]) {
+		for (const state of states) {
 			for (const element of this._elements) {
-				if (element.isElementOfState(ship)) {
+				if (element.isElementOfState(state)) {
+					// destroying a children of stage will remove it from stage's children
+					// so no extra work is needed
 					element.display().destroy();
 					this._elements.delete(element);
 					break;
@@ -60,11 +63,11 @@ export default class Game {
 		this._elements.add(bullet);
 	}
 
-	updateTurnById(shipID: number, dir: Direction) {
+	updateTurnById(shipID: string, dir: Direction) {
 		gameUpdators.updateTurnByID(this._state, shipID, dir);
 	}
 
-	shoot(shipID: number) {
+	shoot(shipID: string) {
 		const bulletState = gameUpdators.shoot(this._state, shipID);
 		if (bulletState !== null) {
 			this.addBullet(bulletState);
@@ -72,7 +75,7 @@ export default class Game {
 	}
 
 	tick(delta: number): void {
-		this._killShips(gameUpdators.tick(this._state, delta));
+		this._removeElements(gameUpdators.tick(this._state, delta));
 
 		for (const element of this._elements) {
 			element.flush();
