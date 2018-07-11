@@ -33,30 +33,6 @@ export default class Game {
 		}
 	}
 
-	private _initRound() {
-		gameUpdators.initLivingShips(this._state);
-
-		for (const shipState of this._state.ships) {
-			const ship = new ShipElement(shipState);
-			this._stage.addChild(ship.display());
-			this._elements.add(ship);
-		}
-	}
-
-	private _removeElements(states: MovableState[]) {
-		for (const state of states) {
-			for (const element of this._elements) {
-				if (element.isElementOfState(state)) {
-					// destroying a children of stage will remove it from stage's children
-					// so no extra work is needed
-					element.display().destroy();
-					this._elements.delete(element);
-					break;
-				}
-			}
-		}
-	}
-
 	addBullet(bulletState: BulletState) {
 		const bullet = new BulletElement(bulletState);
 		this._stage.addChild(bullet.display());
@@ -79,6 +55,30 @@ export default class Game {
 
 		for (const element of this._elements) {
 			element.flush();
+		}
+	}
+
+	private _initRound() {
+		gameUpdators.initLivingShips(this._state);
+
+		for (const shipState of this._state.ships) {
+			const ship = new ShipElement(shipState);
+			this._stage.addChild(ship.display());
+			this._elements.add(ship);
+		}
+	}
+
+	private _removeElements(states: MovableState[]) {
+		for (const state of states) {
+			for (const element of this._elements) {
+				if (element.isElementOfState(state)) {
+					// destroying a children of stage will remove it from stage's children
+					// so no extra work is needed
+					element.display().destroy();
+					this._elements.delete(element);
+					break;
+				}
+			}
 		}
 	}
 }

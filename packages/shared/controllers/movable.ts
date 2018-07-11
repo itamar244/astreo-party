@@ -14,10 +14,10 @@ function coordinateUpdate(
 }
 
 export function getProgress(rotation: number, progress: number) {
-	return [
-		coordinateUpdate(Math.cos, rotation, progress),
-		coordinateUpdate(Math.sin, rotation, progress),
-	];
+	return {
+		x: coordinateUpdate(Math.cos, rotation, progress),
+		y: coordinateUpdate(Math.sin, rotation, progress),
+	};
 }
 
 export interface MovableState {
@@ -28,23 +28,21 @@ export interface MovableState {
 	speed: number;
 }
 
-export function tick(controller: MovableState, delta: number) {
-	move(controller, controller.rotation, delta);
-}
+export const movableUpdators = {
+	tick(controller: MovableState, delta: number) {
+		movableUpdators.move(controller, controller.rotation, delta);
+	},
 
-export function move(
-	controller: MovableState,
-	rotation: number,
-	delta: number,
-) {
-	controller.x += coordinateUpdate(
-		Math.cos,
-		rotation,
-		controller.speed * delta,
-	);
-	controller.y += coordinateUpdate(
-		Math.sin,
-		rotation,
-		controller.speed * delta,
-	);
-}
+	move(controller: MovableState, rotation: number, delta: number) {
+		controller.x += coordinateUpdate(
+			Math.cos,
+			rotation,
+			controller.speed * delta,
+		);
+		controller.y += coordinateUpdate(
+			Math.sin,
+			rotation,
+			controller.speed * delta,
+		);
+	},
+};

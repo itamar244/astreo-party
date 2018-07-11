@@ -2,7 +2,7 @@ import { PI_2 } from '@pixi/math';
 import Point from '../point';
 import { generateID } from '../utils';
 import { BulletState, createBulletFromShip } from './bullet';
-import { MovableState, tick as movableTick } from './movable';
+import { MovableState, movableUpdators } from './movable';
 
 export interface ShipOptions {
 	x: number;
@@ -59,7 +59,7 @@ export const shipUpdators = {
 		// } else {
 		// 	ship.move(ship.rotation);
 		// }
-		movableTick(ship, delta);
+		movableUpdators.tick(ship, delta);
 
 		if (ship.availableBullets < MAX_AVAILABLE_BULLETS) {
 			ship.sinceLastShot += delta;

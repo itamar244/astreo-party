@@ -1,5 +1,5 @@
 import { generateID } from '../utils';
-import { getProgress, MovableState, move, tick } from './movable';
+import { getProgress, MovableState, movableUpdators } from './movable';
 import { SHIP_HEIGHT, ShipState } from './ship';
 
 export const BULLET_RADIUS = 5;
@@ -10,20 +10,17 @@ export interface BulletState extends MovableState {
 }
 
 export function createBulletFromShip(owner: ShipState): BulletState {
-	const [x, y] = getProgress(owner.rotation, SHIP_HEIGHT / 2);
+	const { x, y } = getProgress(owner.rotation, SHIP_HEIGHT / 2);
 
 	return {
 		id: generateID(),
-		owner: owner.id,
 		x: owner.x + x,
 		y: owner.y + y,
-		rotation: owner.rotation,
+		owner: owner.id,
 		radius: BULLET_RADIUS,
+		rotation: owner.rotation,
 		speed: 5,
 	};
 }
 
-export const bulletUpdators = {
-	tick,
-	move,
-};
+export const bulletUpdators = movableUpdators;
