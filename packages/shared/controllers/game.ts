@@ -4,6 +4,7 @@ import { createScoreBoard, ScoreBoard, updateFromKill } from '../score-board';
 import Ticker from '../ticker';
 import { randomNumber, removeItemFromArray } from '../utils';
 import { BulletState, bulletUpdators } from './bullet';
+import { ControllerTypes } from './types';
 import {
 	createShip,
 	Direction,
@@ -13,6 +14,7 @@ import {
 } from './ship';
 
 export interface GameState {
+	type: ControllerTypes.GAME;
 	bullets: BulletState[];
 	livingShips: ShipState[];
 	scoreBoard: ScoreBoard;
@@ -20,38 +22,34 @@ export interface GameState {
 	ships: ShipState[];
 }
 
-export function createGameState(options: ShipOptions[]): GameState {
-	const shipsByID = {};
-	const ships: ShipState[] = [];
-	for (let i = 0; i < options.length; i++) {
-		const ship = createShip(options[i]);
-		shipsByID[ship.id] = ship;
-		ships.push(ship);
-	}
-
+export function createGame(ships: ShipState[]): GameState {
 	return {
 		ships,
-		shipsByID,
+		shipsByID: ships.reduce((acc, cur) => {
+			acc[cur.id] = cur;
+			return acc;
+		}, {}),
+		type: ControllerTypes.GAME,
 		bullets: [],
-		livingShips: ships.slice(),
+		livingShips: [],
 		scoreBoard: createScoreBoard(6, ships),
 	};
 }
 
 export function createRandomGame(
-	ships: number,
+	shipsAmount: number,
 	width: number,
 	height: number,
 ): GameState {
-	const options: ShipOptions[] = [];
-	for (let i = 0; i < ships; i++) {
-		options.push({
+	const ships: ShipState[] = [];
+	for (let i = 0; i < shipsAmount; i++) {
+		ships.push(createShip({
 			rotation: randomNumber(0, 1),
 			x: randomNumber(0, width),
 			y: randomNumber(0, height),
-		});
+		}));
 	}
-	return createGameState(options);
+	return createGame(ships);
 }
 
 export const gameUpdators = {

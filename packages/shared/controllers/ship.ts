@@ -3,6 +3,7 @@ import Point from '../point';
 import { generateID } from '../utils';
 import { BulletState, createBulletFromShip } from './bullet';
 import { MovableState, movableUpdators } from './movable';
+import { ControllerTypes } from './types';
 
 export interface ShipOptions {
 	x: number;
@@ -27,6 +28,7 @@ const MAX_AVAILABLE_BULLETS = 3;
 const FRAMES_UNTIL_RECHARGE = 60;
 
 export interface ShipState extends MovableState {
+	type: ControllerTypes.SHIP;
 	// _rotationBeforeTurn: number;
 	// _turnSince: number;
 	turn: Direction;
@@ -34,9 +36,10 @@ export interface ShipState extends MovableState {
 	sinceLastShot: number;
 }
 
-export function createShip(options: ShipOptions) {
+export function createShip(options: ShipOptions): ShipState {
 	return {
 		...options,
+		type: ControllerTypes.SHIP,
 		id: generateID(),
 		availableBullets: MAX_AVAILABLE_BULLETS,
 		turn: Direction.STRAIGHT,
