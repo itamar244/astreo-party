@@ -18,8 +18,8 @@ const app = new Application({
 app.stage.position.y = app.renderer.height / app.renderer.resolution;
 app.stage.scale.y = -1;
 
-// prettier-ignore
 const game = new Game(app, [
+	// prettier-ignore
 	{ left: 'ArrowLeft', right: 'ArrowRight', shoot: 'Space' },
 	{ left: 'KeyA', right: 'KeyD', shoot: 'KeyS' },
 ]);

@@ -2,7 +2,7 @@ import { BulletState } from './controllers/bullet';
 import { ShipState } from './controllers/ship';
 
 export interface ScoreBoard {
-	scores: { [id: number]: number };
+	scores: Record<string, number>;
 	scoreForWinning: number;
 }
 
@@ -10,16 +10,26 @@ export function createScoreBoard(
 	scoreForWinning: number,
 	ships: ShipState[],
 ): ScoreBoard {
-	const scores = [];
+	const scores = {};
 
 	for (const ship of ships) {
 		scores[ship.id] = 0;
 	}
 
 	return {
-		scores,
 		scoreForWinning,
+		scores,
 	};
+}
+
+function updateById(scoreBoard: ScoreBoard, ship: ShipState, change: number) {
+	const score = scoreBoard.scores[ship.id];
+	if (score === undefined) {
+		return;
+	}
+
+	const next = score + change;
+	scoreBoard.scores[ship.id] = next < 0 ? 0 : next;
 }
 
 export function updateFromKill(
@@ -46,14 +56,4 @@ export function getWinner(scoreBoard: ScoreBoard): number {
 	}
 
 	return maxScore >= scoreBoard.scoreForWinning ? maxShip : null;
-}
-
-function updateById(scoreBoard: ScoreBoard, ship: ShipState, change: number) {
-	const score = scoreBoard.scores[ship.id];
-	if (score === undefined) {
-		return;
-	}
-
-	const next = score + change;
-	scoreBoard.scores[ship.id] = next < 0 ? 0 : next;
 }

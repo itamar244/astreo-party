@@ -8,8 +8,8 @@ import { ControllerTypes } from './types';
 import {
 	createShip,
 	Direction,
-	ShipState,
 	ShipOptions,
+	ShipState,
 	shipUpdators,
 } from './ship';
 
@@ -43,11 +43,13 @@ export function createRandomGame(
 ): GameState {
 	const ships: ShipState[] = [];
 	for (let i = 0; i < shipsAmount; i++) {
-		ships.push(createShip({
-			rotation: randomNumber(0, 1),
-			x: randomNumber(0, width),
-			y: randomNumber(0, height),
-		}));
+		ships.push(
+			createShip({
+				rotation: randomNumber(0, 1),
+				x: randomNumber(0, width),
+				y: randomNumber(0, height),
+			}),
+		);
 	}
 	return createGame(ships);
 }
@@ -59,16 +61,20 @@ export const gameUpdators = {
 
 	tick(game: GameState, delta: number): ShipState[] {
 		const removedObjects = [];
+
 		for (const ship of game.livingShips) {
 			shipUpdators.tick(ship, delta);
 		}
 
 		for (const bullet of game.bullets) {
 			bulletUpdators.tick(bullet, delta);
+
 			const hitShips = getBulletToShipCollision(bullet, game.ships);
+
 			if (hitShips.length > 0) {
 				removedObjects.push(bullet);
 				removeItemFromArray(game.bullets, bullet);
+
 				for (const ship of hitShips) {
 					updateFromKill(game.scoreBoard, bullet, ship);
 					removeItemFromArray(game.livingShips, ship);
@@ -76,6 +82,7 @@ export const gameUpdators = {
 				removedObjects.push(...hitShips);
 			}
 		}
+
 		return removedObjects;
 	},
 
