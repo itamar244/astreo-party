@@ -7,10 +7,13 @@ import {
 	GameState,
 	gameUpdators,
 	MovableState,
+	updateStateFromAction,
+	StateEventType,
 } from 'shared/index';
 import Element from './elements/base';
 import BulletElement from './elements/bullet';
 import ShipElement from './elements/ship';
+import elementFromState from './element-from-state';
 import initPlayer, { PlayerKeyOptions } from './player';
 
 export default class Game {
@@ -33,20 +36,26 @@ export default class Game {
 		}
 	}
 
-	addBullet(bulletState: BulletState) {
-		const bullet = new BulletElement(bulletState);
-		this._stage.addChild(bullet.display());
-		this._elements.add(bullet);
+	addChild(element: Element) {
+		this._stage.addChild(element.display());
+		this._elements.add(element);
 	}
 
 	updateTurnById(shipID: string, dir: Direction) {
-		gameUpdators.updateTurnByID(this._state, shipID, dir);
+		updateStateFromAction(this._state, {
+			type: StateEventType.TURN_SHIP,
+			id: shipID,
+			data: { dir },
+		});
 	}
 
 	shoot(shipID: string) {
-		const bulletState = gameUpdators.shoot(this._state, shipID);
+		const bulletState = updateStateFromAction(this._state, {
+			type: StateEventType.SHOOT,
+			id: shipID,
+		});
 		if (bulletState !== null) {
-			this.addBullet(bulletState);
+			this.addChild(elementFromState(bulletState));
 		}
 	}
 
@@ -62,9 +71,7 @@ export default class Game {
 		gameUpdators.initLivingShips(this._state);
 
 		for (const shipState of this._state.ships) {
-			const ship = new ShipElement(shipState);
-			this._stage.addChild(ship.display());
-			this._elements.add(ship);
+			this.addChild(new ShipElement(shipState));
 		}
 	}
 
