@@ -87,7 +87,11 @@ export const gameUpdators = {
 	},
 
 	updateTurnByID(game: GameState, id: string, dir: Direction) {
-		shipUpdators.updateTurn(game.shipsByID[id], dir);
+		const ship = game.shipsByID[id];
+
+		if (game.livingShips.includes(ship)) {
+			shipUpdators.updateTurn(ship, dir);
+		}
 	},
 
 	shoot(game: GameState, shipID: string) {
