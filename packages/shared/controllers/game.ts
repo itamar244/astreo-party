@@ -4,7 +4,7 @@ import { createScoreBoard, ScoreBoard, updateFromKill } from '../score-board';
 import Ticker from '../ticker';
 import { randomNumber, removeItemFromArray } from '../utils';
 import { BulletState, bulletUpdators } from './bullet';
-import { ControllerTypes } from './types';
+import { ControllerTypes, MovableState } from './types';
 import {
 	createShip,
 	Direction,
@@ -19,18 +19,22 @@ export interface GameState {
 	livingShips: ShipState[];
 	scoreBoard: ScoreBoard;
 	shipsByID: Record<string, ShipState>;
+	elementsByID: Record<string, MovableState>;
 	ships: ShipState[];
 }
 
 export function createGame(ships: ShipState[]): GameState {
+	const shipsByID = ships.reduce((acc, cur) => {
+		acc[cur.id] = cur;
+		return acc;
+	}, {});
+
 	return {
-		ships,
-		shipsByID: ships.reduce((acc, cur) => {
-			acc[cur.id] = cur;
-			return acc;
-		}, {}),
 		type: ControllerTypes.GAME,
+		ships,
+		shipsByID,
 		bullets: [],
+		elementsByID: { ...shipsByID },
 		livingShips: [],
 		scoreBoard: createScoreBoard(6, ships),
 	};
@@ -97,6 +101,7 @@ export const gameUpdators = {
 	shoot(game: GameState, shipID: string) {
 		const bullet = shipUpdators.shoot(game.shipsByID[shipID]);
 		if (bullet !== null) {
+			game.elementsByID[bullet.id] = bullet;
 			game.bullets.push(bullet);
 		}
 		return bullet;

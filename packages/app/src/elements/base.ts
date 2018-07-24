@@ -6,25 +6,25 @@ export default abstract class Element<
 	State extends MovableState = MovableState
 > {
 	protected readonly _display: Display;
-	protected readonly _state: State;
+	public readonly id: string;
 
 	constructor(state: State) {
-		this._state = state;
-		this._display = this._init();
-		this.flush();
+		this._display = this._init(state);
+		this.id = state.id;
+		this.flush(state);
 	}
 
 	display(): Display {
 		return this._display;
 	}
 
-	flush(): void {
-		this._display.position.set(this._state.x, this._state.y);
+	flush(state: State): void {
+		this._display.position.set(state.x, state.y);
 	}
 
 	isElementOfState(state: MovableState): boolean {
-		return this._state.id === state.id;
+		return this.id === state.id;
 	}
 
-	protected abstract _init(): Display;
+	protected abstract _init(state: State): Display;
 }

@@ -27,8 +27,8 @@ export default class ShipElement extends Element<Graphics, ShipState> {
 		return ship;
 	}
 
-	flush(): void {
-		super.flush();
-		this._display.rotation = this._state.rotation * PI_2;
+	flush(state: ShipState): void {
+		super.flush(state);
+		this._display.rotation = state.rotation * PI_2;
 	}
 }

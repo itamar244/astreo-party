@@ -61,10 +61,11 @@ export default class Game {
 	}
 
 	tick(delta: number): void {
+		const state = this._state;
 		this._removeElements(gameUpdators.tick(this._state, delta));
 
 		for (const element of this._elements) {
-			element.flush();
+			element.flush(state.elementsByID[element.id]);
 		}
 	}
 
