@@ -50,12 +50,13 @@ export default class Game {
 	}
 
 	shoot(shipID: string) {
-		const bulletState = updateStateFromAction(this._state, {
+		const change = updateStateFromAction(this._state, {
 			type: StateEventType.SHOOT,
 			id: shipID,
 		});
-		if (bulletState !== null) {
-			this.addChild(elementFromState(bulletState));
+
+		for (const state of change.added) {
+			this.addChild(elementFromState(state));
 		}
 	}
 

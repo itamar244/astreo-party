@@ -18,15 +18,32 @@ export type Action =
 	| ActionBase<StateEventType.TURN_SHIP, { dir: Direction }>
 	| ActionBase<StateEventType.SHOOT>;
 
+export interface UpdateChange {
+	added: MovableState[];
+	removed: MovableState[];
+}
+
+const defaultChange: UpdateChange = {
+	added: [],
+	removed: [],
+};
+
 export default function updateStateFromAction(
 	game: GameState,
 	action: Readonly<Action>,
-): null | MovableState {
+): UpdateChange {
 	switch (action.type) {
 		case StateEventType.TURN_SHIP:
 			gameUpdators.updateTurnByID(game, action.id, action.data.dir);
-			return null;
-		case StateEventType.SHOOT:
-			return gameUpdators.shoot(game, action.id);
+			return defaultChange;
+		case StateEventType.SHOOT: {
+			const bullet = gameUpdators.shoot(game, action.id);
+
+			// prettier-ignore
+			return bullet === null ? defaultChange : {
+				added: [bullet],
+				removed: [],
+			};
+		}
 	}
 }
