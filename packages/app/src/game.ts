@@ -1,6 +1,7 @@
 import { Application } from '@pixi/app';
 import { Container } from '@pixi/core';
 import {
+	actions,
 	BulletState,
 	createRandomGame,
 	Direction,
@@ -44,17 +45,17 @@ export default class Game {
 	}
 
 	updateTurnById(shipID: string, dir: Direction) {
-		this._state = updateStateFromAction(this._state, {
-			type: StateEventType.TURN_SHIP,
-			data: { dir, id: shipID },
-		}).next;
+		this._state = updateStateFromAction(
+			this._state,
+			actions.turnShip(shipID, dir),
+		).next;
 	}
 
 	shoot(shipID: string) {
-		const { next, change } = updateStateFromAction(this._state, {
-			type: StateEventType.SHOOT,
-			data: { id: shipID },
-		});
+		const { next, change } = updateStateFromAction(
+			this._state,
+			actions.shoot(shipID),
+		);
 
 		this._state = next;
 
@@ -64,10 +65,11 @@ export default class Game {
 	}
 
 	tick(delta: number): void {
-		const { next, change } = updateStateFromAction(this._state, {
-			type: StateEventType.TICK,
-			data: { delta },
-		});
+		const { next, change } = updateStateFromAction(
+			this._state,
+			actions.tick(delta),
+		);
+
 		this._removeElements(change.removed);
 		this._state = next;
 
@@ -77,9 +79,7 @@ export default class Game {
 	}
 
 	private _initRound() {
-		const { next } = updateStateFromAction(this._state, {
-			type: StateEventType.INIT,
-		});
+		const { next } = updateStateFromAction(this._state, actions.init());
 
 		this._state = next;
 

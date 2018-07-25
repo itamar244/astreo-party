@@ -1,31 +1,14 @@
 import produce from 'immer';
 import { MovableState } from './controllers/types';
 import { BulletState } from './controllers/bullet';
-import { Direction } from './controllers/ship';
 import { GameState, gameUpdators } from './controllers/game';
-
-export enum StateEventType {
-	INIT,
-	TICK,
-	TURN_SHIP,
-	SHOOT,
-}
-
-interface ActionBase<Type extends StateEventType, Data = undefined> {
-	type: Type;
-	data?: Data;
-}
-
-type ElementActionBase<Type extends StateEventType, Data = {}> = ActionBase<
-	Type,
-	Data & { id: string }
->;
-
-export type Action =
-	| ActionBase<StateEventType.INIT>
-	| ActionBase<StateEventType.TICK, { delta: number }>
-	| ElementActionBase<StateEventType.TURN_SHIP, { dir: Direction }>
-	| ElementActionBase<StateEventType.SHOOT>;
+import {
+	Action,
+	ActionTick,
+	ActionTurnShip,
+	ActionShoot,
+	StateEventType,
+} from './state-actions';
 
 interface UpdateChange {
 	added: string[];
@@ -42,9 +25,30 @@ const defaultChange: UpdateChange = {
 	removed: [],
 };
 
+function tick(draft: GameState, action: ActionTick) {
+	return {
+		added: [],
+		removed: gameUpdators.tick(draft, action.data.delta),
+	};
+}
+
+function turnShip(draft: GameState, action: ActionTurnShip) {
+	gameUpdators.updateTurnByID(draft, action.data.id, action.data.dir);
+}
+
+function shoot(draft: GameState, action: ActionShoot) {
+	const bulletID = gameUpdators.shoot(draft, action.data.id);
+
+	// prettier-ignore
+	return bulletID === null ? defaultChange : {
+		added: [bulletID],
+		removed: [],
+	};
+}
+
 export default function updateStateFromAction(
 	game: GameState,
-	action: Readonly<Action>,
+	action: Action,
 ): Update {
 	let change = defaultChange;
 
@@ -54,23 +58,13 @@ export default function updateStateFromAction(
 				gameUpdators.initLivingShips(draft);
 				break;
 			case StateEventType.TICK:
-				change = {
-					added: [],
-					removed: gameUpdators.tick(draft, action.data.delta),
-				};
+				change = tick(draft, action);
 				break;
 			case StateEventType.TURN_SHIP:
-				gameUpdators.updateTurnByID(draft, action.data.id, action.data.dir);
+				turnShip(draft, action);
 				break;
 			case StateEventType.SHOOT: {
-				const bulletID = gameUpdators.shoot(draft, action.data.id);
-
-				if (bulletID !== null) {
-					change = {
-						added: [bulletID],
-						removed: [],
-					};
-				}
+				change = shoot(draft, action);
 				break;
 			}
 		}
