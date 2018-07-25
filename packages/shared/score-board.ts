@@ -8,11 +8,11 @@ export interface ScoreBoard {
 
 export function createScoreBoard(
 	scoreForWinning: number,
-	ships: ShipState[],
+	ships: Record<string, ShipState>,
 ): ScoreBoard {
 	const scores = {};
 
-	for (const ship of ships) {
+	for (const ship of Object.values(ships)) {
 		scores[ship.id] = 0;
 	}
 

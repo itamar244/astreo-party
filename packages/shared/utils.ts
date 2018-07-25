@@ -12,3 +12,23 @@ export function generateID(): string {
 	const cur = id++;
 	return cur.toString(10);
 }
+
+export function objectEach<K extends string, V>(
+	obj: Record<K, V>,
+	func: (V, K) => void,
+) {
+	for (const key in obj) {
+		func(obj[key], key);
+	}
+}
+
+export function objectGuardedEach<K extends string, V>(
+	obj: Record<K, V>,
+	func: (V, K) => void,
+) {
+	for (const key in obj) {
+		if (obj[key] != null) {
+			func(obj[key], key);
+		}
+	}
+}

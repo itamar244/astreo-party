@@ -6,10 +6,12 @@ import {
 	Direction,
 	GameState,
 	gameUpdators,
+	gameAccessors,
 	MovableState,
 	updateStateFromAction,
 	StateEventType,
 } from 'shared/index';
+import { objectEach } from 'shared/utils';
 import Element from './elements/base';
 import BulletElement from './elements/bullet';
 import ShipElement from './elements/ship';
@@ -17,7 +19,7 @@ import elementFromState from './element-from-state';
 import initPlayer, { PlayerKeyOptions } from './player';
 
 export default class Game {
-	private readonly _state: GameState;
+	private _state: GameState;
 	private readonly _elements = new Set<Element>();
 	private readonly _stage: Container;
 
@@ -30,7 +32,7 @@ export default class Game {
 		this._stage = app.stage;
 		this._initRound();
 
-		const { ships } = this._state;
+		const ships = Object.values(this._state.ships);
 		for (let i = 0; i < ships.length; i++) {
 			initPlayer(ships[i].id, playersKeys[i], this);
 		}
@@ -42,45 +44,54 @@ export default class Game {
 	}
 
 	updateTurnById(shipID: string, dir: Direction) {
-		updateStateFromAction(this._state, {
+		this._state = updateStateFromAction(this._state, {
 			type: StateEventType.TURN_SHIP,
-			id: shipID,
-			data: { dir },
-		});
+			data: { dir, id: shipID },
+		}).next;
 	}
 
 	shoot(shipID: string) {
-		const change = updateStateFromAction(this._state, {
+		const { next, change } = updateStateFromAction(this._state, {
 			type: StateEventType.SHOOT,
-			id: shipID,
+			data: { id: shipID },
 		});
 
-		for (const state of change.added) {
-			this.addChild(elementFromState(state));
+		this._state = next;
+
+		for (const id of change.added) {
+			this.addChild(elementFromState(gameAccessors.elementsByID(next, id)));
 		}
 	}
 
 	tick(delta: number): void {
-		const state = this._state;
-		this._removeElements(gameUpdators.tick(this._state, delta));
+		const { next, change } = updateStateFromAction(this._state, {
+			type: StateEventType.TICK,
+			data: { delta },
+		});
+		this._removeElements(change.removed);
+		this._state = next;
 
 		for (const element of this._elements) {
-			element.flush(state.elementsByID[element.id]);
+			element.flush(gameAccessors.elementsByID(next, element.id));
 		}
 	}
 
 	private _initRound() {
-		gameUpdators.initLivingShips(this._state);
+		const { next } = updateStateFromAction(this._state, {
+			type: StateEventType.INIT,
+		});
 
-		for (const shipState of this._state.ships) {
-			this.addChild(new ShipElement(shipState));
-		}
+		this._state = next;
+
+		objectEach(next.ships, ship => {
+			this.addChild(new ShipElement(ship));
+		});
 	}
 
-	private _removeElements(states: MovableState[]) {
-		for (const state of states) {
+	private _removeElements(ids: string[]) {
+		for (const id of ids) {
 			for (const element of this._elements) {
-				if (element.isElementOfState(state)) {
+				if (element.id === id) {
 					// destroying a children of stage will remove it from stage's children
 					// so no extra work is needed
 					element.display().destroy();

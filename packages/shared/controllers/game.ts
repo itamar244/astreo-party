@@ -5,6 +5,7 @@ import Ticker from '../ticker';
 import { randomNumber, removeItemFromArray } from '../utils';
 import { BulletState, bulletUpdators } from './bullet';
 import { ControllerTypes, MovableState } from './types';
+import { objectGuardedEach } from '../utils';
 import {
 	createShip,
 	Direction,
@@ -15,16 +16,15 @@ import {
 
 export interface GameState {
 	type: ControllerTypes.GAME;
-	bullets: BulletState[];
-	livingShips: ShipState[];
+	bullets: Record<string, BulletState>;
+	// array containing IDs.
+	livingShipsIDs: string[];
 	scoreBoard: ScoreBoard;
-	shipsByID: Record<string, ShipState>;
-	elementsByID: Record<string, MovableState>;
-	ships: ShipState[];
+	ships: Record<string, null | ShipState>;
 }
 
-export function createGame(ships: ShipState[]): GameState {
-	const shipsByID = ships.reduce((acc, cur) => {
+export function createGame(shipsArr: ShipState[]): GameState {
+	const ships = shipsArr.reduce((acc, cur) => {
 		acc[cur.id] = cur;
 		return acc;
 	}, {});
@@ -32,10 +32,8 @@ export function createGame(ships: ShipState[]): GameState {
 	return {
 		type: ControllerTypes.GAME,
 		ships,
-		shipsByID,
-		bullets: [],
-		elementsByID: { ...shipsByID },
-		livingShips: [],
+		bullets: {},
+		livingShipsIDs: [],
 		scoreBoard: createScoreBoard(6, ships),
 	};
 }
@@ -60,50 +58,56 @@ export function createRandomGame(
 
 export const gameUpdators = {
 	initLivingShips(game: GameState) {
-		game.livingShips = game.ships.slice();
+		game.livingShipsIDs = Object.values(game.ships).map(ship => ship.id);
 	},
 
-	tick(game: GameState, delta: number): ShipState[] {
+	tick(game: GameState, delta: number): string[] {
 		const removedObjects = [];
 
-		for (const ship of game.livingShips) {
-			shipUpdators.tick(ship, delta);
+		for (const id of game.livingShipsIDs) {
+			shipUpdators.tick(game.ships[id], delta);
 		}
 
-		for (const bullet of game.bullets) {
+		objectGuardedEach(game.bullets, bullet => {
 			bulletUpdators.tick(bullet, delta);
 
 			const hitShips = getBulletToShipCollision(bullet, game.ships);
 
 			if (hitShips.length > 0) {
-				removedObjects.push(bullet);
-				removeItemFromArray(game.bullets, bullet);
+				removedObjects.push(bullet.id);
+				game.bullets[bullet.id] = null;
 
 				for (const ship of hitShips) {
 					updateFromKill(game.scoreBoard, bullet, ship);
-					removeItemFromArray(game.livingShips, ship);
+					removeItemFromArray(game.livingShipsIDs, ship.id);
 				}
-				removedObjects.push(...hitShips);
+				removedObjects.push(...hitShips.map(ship => ship.id));
 			}
-		}
+		});
 
 		return removedObjects;
 	},
 
 	updateTurnByID(game: GameState, id: string, dir: Direction) {
-		const ship = game.shipsByID[id];
+		const ship = game.ships[id];
 
-		if (game.livingShips.includes(ship)) {
+		if (game.livingShipsIDs.includes(ship.id)) {
 			shipUpdators.updateTurn(ship, dir);
 		}
 	},
 
 	shoot(game: GameState, shipID: string) {
-		const bullet = shipUpdators.shoot(game.shipsByID[shipID]);
+		const bullet = shipUpdators.shoot(game.ships[shipID]);
 		if (bullet !== null) {
-			game.elementsByID[bullet.id] = bullet;
-			game.bullets.push(bullet);
+			game.bullets[bullet.id] = bullet;
+			return bullet.id;
 		}
-		return bullet;
+		return null;
+	},
+};
+
+export const gameAccessors = {
+	elementsByID(game: GameState, id: string) {
+		return game.ships[id] || game.bullets[id] || null;
 	},
 };
